@@ -3,11 +3,13 @@
  */
 
 /**
- * Calculate the distance, bearing and direction between two coordinates
+ * Calculate the distance, bearing and direction between two coordinates.
  * 
- * calculations on the basis of a spherical earth (ignoring ellipsoidal effects) – which is accurate enough* for most purposes… [In fact, the earth is very slightly ellipsoidal; using a spherical model gives errors typically up to 0.3%
+ * Distance calculations on the basis of a spherical earth (ignoring ellipsoidal effects) *which is accurate enough* for most purposes… 
+ * In fact, the earth is very slightly ellipsoidal; using a spherical model gives errors typically up to 0.3%.
  * 
- * This uses the ‘haversine’ formula to calculate the great-circle distance between two points – that is, the shortest distance over the earth’s surface – giving an ‘as-the-crow-flies’ distance between the points
+ * It uses the ‘haversine’ formula to calculate the great-circle distance between two points (also known as the ‘crow-line’) 
+ * - that is, the shortest distance over the earth’s surface.
  * 
  * @param {number} lat1 					latitude of the first point
  * @param {number} lng1 					longitude of the first point
@@ -60,7 +62,7 @@ function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, units="m", beari
 	 * @param {number} d 
 	 * @returns {number}
 	 */
-	function deg2rad(d) { return d * (Math.PI / 180); }
+	function deg2rad(d) { return (d * Math.PI / 180); }
 				
 	function degrees(n) { return n * (180 / Math.PI); }
 
@@ -192,20 +194,57 @@ function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, units="m", beari
 
 		return "";
 	}
+	
+	/**
+	 * Havesine formula to calculate the great-circle distance between two points
+	 * @param {number} lat1 	In degrees
+	 * @param {number} lng1 	In degrees
+	 * @param {number} lat2 	In degrees
+	 * @param {number} lng2 	In degrees
+	 * @param {Units} units 
+	 * @returns {number}
+	 */
+	function getDistance(lat1, lng1, lat2, lng2, units) {
 
-	function getDistance(lat1, lng1, lat2, lng2) {
-		
-		const dLat  = deg2rad(lat1 - lat2);
-		const dLong = deg2rad(lng1 - lng2);
+		const rLat1	= deg2rad(lat1); 		// Latitude1 in radians
+		const rLat2	= deg2rad(lat2); 		// Latitude2 in radians
+		const dLat  = deg2rad(lat1 - lat2); // Latitude difference in radians
+		const dLong = deg2rad(lng1 - lng2); // Longitude difference in radians
 
 		const a = 
-			Math.sin(dLat/2) * Math.sin(dLat/2) +
-			Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat1)) * 
-			Math.sin(dLong/2) * Math.sin(dLong/2);
-		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+			Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+			Math.cos(rLat1) * Math.cos(rLat2) * 
+			Math.sin(dLong / 2) * Math.sin(dLong / 2);
+		
+		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
 		// TODO: add suport for various units and precision rounding
-		return R * c; // in meters
+
+		return metersConverter((R * c), units);
+	}
+
+	function metersConverter(distance, outputUnits="m") {
+		
+		if (outputUnits === "m") return distance;
+
+		switch(outputUnits) {
+			case("km"):
+				return (distance * 0.001);
+				break;
+			case("ft"):
+				return (distance * 3.28084);
+				break;
+			case("mi"):
+				return (distance * 0.000621371);
+				break;
+			case("nm"):
+				return (distance * 0.000539957);
+				break;
+			default:
+				return distance;
+				break;
+		}
+		
 	}
 
 	
