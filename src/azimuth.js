@@ -1,27 +1,35 @@
 /**
+ * @typedef {"m" | "km" | "ft" | "mi" | "nm"} Units
+ */
+
+/**
  * Calculate the distance, bearing and direction between two coordinates
  * 
  * calculations on the basis of a spherical earth (ignoring ellipsoidal effects) – which is accurate enough* for most purposes… [In fact, the earth is very slightly ellipsoidal; using a spherical model gives errors typically up to 0.3%
  * 
  * This uses the ‘haversine’ formula to calculate the great-circle distance between two points – that is, the shortest distance over the earth’s surface – giving an ‘as-the-crow-flies’ distance between the points
  * 
- * @param {number} lat1 		Starting point latitude
- * @param {number} lng1 		Starting point longitude
- * @param {number} lat2 			Ending point latitude
- * @param {number} lng2 		Ending point longitude
- * @param {string} [units="m"]			Units of the distance; Default "m" meters. 
- * 										Accepts only:
- * 											"m" for meters, 
- * 											"km" for kilometers, 
- * 											"ft" for foots, 
- * 											"mi" for miles, 
- * 											"nm" for nautical miles
+ * @param {number} lat1 					latitude of the first point
+ * @param {number} lng1 					longitude of the first point
+ * @param {number} lat2 					latitude of the second point
+ * @param {number} lng2 					longitude of the second point
  * @param {number} [distancePrecision=0]	Number of decimal places for distance; Default is 0;
+ * @param {Units} [units="m"] 				Units of the distance; Default "m" meters. Accepts only:
+ * 												"m" for meters, 
+ * 												"km" for kilometers, 
+ * 												"ft" for foots, 
+ * 												"mi" for miles, 
+ * 												"nm" for nautical miles
  * @param {number} bearingPrecision  		Number of decimal places for azimuth degrees; Default 0;
- * @param {number} directionPrecision  	Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
- * @returns {Object}
+ * @param {number} directionPrecision  		Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
+ * @returns {Object}	azimuth
+ * @returns {number}	azimuth.distance	Distance in units provided
+ * @returns {string}	azimuth.units		Units of the distance
+ * @returns {number}	azimuth.bearing		Angle bearing from point 1 to point 2
+ * @returns {string}	azimuth.direction	Compass direction from point 1 to point 2
+ * @throws {Error} 							
  */
-function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, bearingPrecision = 0, directionPrecision = 1) {
+function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, units="m", bearingPrecision = 0, directionPrecision = 1) {
 	
 	// Validate parameters
 	if (isNaN(lat1) || isNaN(lat2) || isNaN(lng1) || isNaN(lng2) || isNaN(bearingPrecision) || isNaN(directionPrecision)) {
@@ -208,6 +216,8 @@ function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, bearingPrecision
 
 	// Distance in meters
 	output.distance = getDistance(lat1, lng1, lat2, lng2).round(distancePrecision);
+
+	output.units = units;
 	
 	const bearing = roundNumber(getBearing(lat1, lng1, lat2, lng2), bearingPrecision);
 	output.bearing = bearing;
