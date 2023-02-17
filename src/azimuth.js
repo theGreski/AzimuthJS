@@ -227,6 +227,6 @@ function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, units="m", beari
 	}
 
 
-	return output;
+	return output; 
 
 }
