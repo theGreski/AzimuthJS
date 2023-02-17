@@ -53,7 +53,7 @@ function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, units="m", beari
 	 * @type {number}
 	 * @const
 	 */
-	const R = 6371009; 
+	const R = 6371009;
 
 	// Numeric degrees to radians
 	function deg2rad(d) { return d * (Math.PI / 180); }
