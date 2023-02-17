@@ -27,13 +27,13 @@ Complete list of all parameters, including optional
   * `latitude2`  - Latitude of the second point, mandatory, number
   * `longitude2` - Longitude of the second point, mandatory, number
   * `units`      - Units of the distance. Accepts only:
-      "m" for meters, 
-      "km" for kilometers, 
-      "ft" for foots, 
-      "yd" for yards, 
-      "mi" for miles, 
-      "nm" for nautical miles
-      Optional. Default is meters.
+    "m" for meters, 
+    "km" for kilometers, 
+    "ft" for foots, 
+    "yd" for yards, 
+    "mi" for miles, 
+    "nm" for nautical miles
+    Optional. Default is meters.
   * `distancePrecision`  - Number of decimal places for distance; Optional. Default is 0; 
   * `bearingPrecision`   - Number of decimal places for azimuth degrees; Optional. Default 0;
   * `directionPrecision` - Compass direction precision; Accepts only:
