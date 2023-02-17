@@ -27,6 +27,7 @@ Complete list of all parameters, including optional
   * `latitude2`  - Latitude of the second point, mandatory, number
   * `longitude2` - Longitude of the second point, mandatory, number
   * `units`      - Units of the distance. Accepts only:
+  
     "m" for meters, 
     "km" for kilometers, 
     "ft" for foots, 
