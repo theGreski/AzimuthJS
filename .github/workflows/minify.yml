@@ -26,6 +26,7 @@ jobs:
         with:
           directory: 'src'
           output: 'dist'
+          overwrite: true
 
       # Auto commits minified files to the repository
       # Ignore it if you don't want to commit the files to the repository 
