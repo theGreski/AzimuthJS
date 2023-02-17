@@ -22,25 +22,26 @@ The output will look like this:
 
 Complete list of all parameters, including optional
 
-    * `latitude1` - Latitude of the first point, mandatory, number
-    * `longitude1` - Longitude of the first point, mandatory, number
-    * `latitude2` - Latitude of the second point, mandatory, number
-    * `longitude2` - Longitude of the second point, mandatory, number
-    * `units` - Units of the distance. Accepts only:
-                    "m" for meters, 
-                    "km" for kilometers, 
-                    "ft" for foots, 
-                    "yd" for yards, 
-                    "mi" for miles, 
-                    "nm" for nautical miles
-                Optional. Default is meters.
-    * `distancePrecision` - Number of decimal places for distance; Default is 0; 
-    * `bearingPrecision` - Number of decimal places for azimuth degrees; Default 0;
-    * `directionPrecision` - Compass direction precision; Accepts only 0, 1, 2 and 3;
-        0 - No compass dirction,
-        1 - Cardinal directions (N, E, S, W)
-        2 - Intercardinal directions (N, NE, E, SE, S, SW, W, NW)
-        3 - Secondary intercardinal directions (N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW)
+  * `latitude1`  - Latitude of the first point, mandatory, number
+  * `longitude1` - Longitude of the first point, mandatory, number
+  * `latitude2`  - Latitude of the second point, mandatory, number
+  * `longitude2` - Longitude of the second point, mandatory, number
+  * `units`      - Units of the distance. Accepts only:
+      "m" for meters, 
+      "km" for kilometers, 
+      "ft" for foots, 
+      "yd" for yards, 
+      "mi" for miles, 
+      "nm" for nautical miles
+      Optional. Default is meters.
+  * `distancePrecision`  - Number of decimal places for distance; Optional. Default is 0; 
+  * `bearingPrecision`   - Number of decimal places for azimuth degrees; Optional. Default 0;
+  * `directionPrecision` - Compass direction precision; Accepts only:
+      0 - No compass dirction,
+      1 - Cardinal directions (N, E, S, W)
+      2 - Intercardinal directions (N, NE, E, SE, S, SW, W, NW)
+      3 - Secondary intercardinal directions (N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW)
+      Optional. Default is 1.
 
 
 Released under the [MIT License](http://www.opensource.org/licenses/mit-license.php)
