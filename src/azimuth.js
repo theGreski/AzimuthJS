@@ -1,27 +1,50 @@
 /**
  * Calculate the distance, bearing and direction between two coordinates
- * @param {number} startLatitude 		Starting point latitude
- * @param {number} startLongitude 		Starting point longitude
- * @param {number} endLatitude 			Ending point latitude
- * @param {number} endLongitude 		Ending point longitude
+ * 
+ * calculations on the basis of a spherical earth (ignoring ellipsoidal effects) – which is accurate enough* for most purposes… [In fact, the earth is very slightly ellipsoidal; using a spherical model gives errors typically up to 0.3%
+ * 
+ * This uses the ‘haversine’ formula to calculate the great-circle distance between two points – that is, the shortest distance over the earth’s surface – giving an ‘as-the-crow-flies’ distance between the points
+ * 
+ * @param {number} lat1 		Starting point latitude
+ * @param {number} lng1 		Starting point longitude
+ * @param {number} lat2 			Ending point latitude
+ * @param {number} lng2 		Ending point longitude
+ * @param {string} [units="m"]			Units of the distance; Default "m" meters. 
+ * 										Accepts only:
+ * 											"m" for meters, 
+ * 											"km" for kilometers, 
+ * 											"ft" for foots, 
+ * 											"mi" for miles, 
+ * 											"nm" for nautical miles
  * @param {number} bearingPrecision  	Degree precision rounding; Default 0;
  * @param {number} directionPrecision  	Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
  * @returns {Object}
  */
-function azimuth(startLatitude, startLongitude, endLatitude, endLongitude, bearingPrecision = 0, directionPrecision = 0) {
+function azimuth(lat1, lng1, lat2, lng2, bearingPrecision = 0, directionPrecision = 0) {
 	
-	const R = 6371000; // radius of earth in meters
+	// Validate parameters
+	if (isNaN(lat1) || isNaN(lat2) || isNaN(lng1) || isNaN(lng2) || isNaN(bearingPrecision) || isNaN(directionPrecision)) {
+		throw new Error('Parameter is not a number!');
+	}
+
+	if (Math.abs(lat1) > 90 || Math.abs(lat2) > 90 || Math.abs(lng1) > 180 || Math.abs(lng2) > 180) {
+		throw new Error('Parameter exceeding maximal value!');
+	}
+
+	// A globally-average value is usually considered to be 6,371 kilometres (3,959 mi) with a 0.3% variability
+	// radius of earth in meters mean radius
+	const R = 6371009; 
 
 	// Numeric degrees to radians
 	function deg2rad(d) { return d * (Math.PI / 180); }
 				
 	function degrees(n) { return n * (180 / Math.PI); }
 				
-	function getBearing(startLatitude, startLongitude, endLatitude, endLongitude) {
-		startLatitude = deg2rad(startLatitude);
-		startLongitude = deg2rad(startLongitude);
-		endLatitude = deg2rad(endLatitude);
-		endLongitude = deg2rad(endLongitude);
+	function getBearing(lat1, lng1, lat2, lng2) {
+		startLatitude = deg2rad(lat1);
+		startLongitude = deg2rad(lng1);
+		endLatitude = deg2rad(lat2);
+		endLongitude = deg2rad(lng2);
 				
 		var dLong = endLongitude - startLongitude;
 					
@@ -139,15 +162,23 @@ function azimuth(startLatitude, startLongitude, endLatitude, endLongitude, beari
 		return "";
 	}
 
-	// 
-	const dLat  = deg2rad(startLatitude - endLatitude);
-	const dLong = deg2rad(startLongitude - endLongitude);
+	function getDistance(lat1, lng1, lat2, lng2) {
+		
+		const dLat  = deg2rad(lat1 - lat2);
+		const dLong = deg2rad(lng1 - lng2);
 
-	const a = 
+		const a = 
 			Math.sin(dLat/2) * Math.sin(dLat/2) +
-			Math.cos(rad(startLatitude)) * Math.cos(rad(startLatitude)) * 
+			Math.cos(rad(lat1)) * Math.cos(rad(lat1)) * 
 			Math.sin(dLong/2) * Math.sin(dLong/2);
-	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+		return R * c; // in meters
+	}
+
+	
+
+	
 	
 
 	// Create output object
@@ -155,12 +186,12 @@ function azimuth(startLatitude, startLongitude, endLatitude, endLongitude, beari
 
 	
 	// Distance in meters
-	output.distance = R * c;
+	output.distance = getDistance(lat1, lng1, lat2, lng2);
 	
-	const bearing = roundNumber(getBearing(startLatitude, startLongitude, endLatitude, endLongitude), bearingPrecision);
+	const bearing = roundNumber(getBearing(lat1, lng1, lat2, lng2), bearingPrecision);
 	output.bearing = bearing;
 
-	if (directionPrecision != 0) {
+	if (directionPrecision !== 0) {
 		output.direction = getDirection(bearing, directionPrecision);
 	}
 
