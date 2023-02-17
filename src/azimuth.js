@@ -1,5 +1,5 @@
 /**
- * @typedef {"m" | "km" | "ft" | "mi" | "nm"} Units
+ * @typedef {"m" | "km" | "ft" | "yd" | "mi" | "nm"} Units
  */
 
 /**
@@ -20,6 +20,7 @@
  * 												"m" for meters, 
  * 												"km" for kilometers, 
  * 												"ft" for foots, 
+ * 												"yd" for yards, 
  * 												"mi" for miles, 
  * 												"nm" for nautical miles
  * @param {number} bearingPrecision  		Number of decimal places for azimuth degrees; Default 0;
@@ -31,7 +32,7 @@
  * @returns {string}	azimuth.direction	Compass direction from point 1 to point 2
  * @throws {Error} 							
  */
-function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, units="m", bearingPrecision = 0, directionPrecision = 1) {
+export default function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, units="m", bearingPrecision = 0, directionPrecision = 1) {
 	
 	// Validate parameters
 	if (isNaN(lat1) || isNaN(lat2) || isNaN(lng1) || isNaN(lng2) || isNaN(bearingPrecision) || isNaN(directionPrecision)) {
@@ -223,16 +224,25 @@ function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, units="m", beari
 		return metersConverter((R * c), units);
 	}
 
-	function metersConverter(distance, outputUnits="m") {
+	/**
+	 * Convert length/distance from base unit (meters)
+	 * @param {number} distance 
+	 * @param {Units} units 
+	 * @returns {number}
+	 */
+	function metersConverter(distance, units="m") {
 		
-		if (outputUnits === "m") return distance;
+		if (units === "m") return distance;
 
-		switch(outputUnits) {
+		switch(units) {
 			case("km"):
 				return (distance * 0.001);
 				break;
 			case("ft"):
 				return (distance * 3.28084);
+				break;
+			case("yd"):
+				return (distance * 1.0936);
 				break;
 			case("mi"):
 				return (distance * 0.000621371);
