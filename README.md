@@ -20,6 +20,21 @@ The output will look like this:
 }
 ```
 
+```javascript
+azimuth(51.509865, -0.118092, 40.730610, -73.935242, "mi", 3, 3, 2)
+```
+
+The output will look like this:
+```javascript
+{
+    distance: 5564892.653,
+    units: "mi",
+    bearing: 258.049,
+    direction: "W"
+}
+```
+
+
 Complete list of all parameters, including optional
 
   * `latitude1`  - Latitude of the first point, mandatory, number
