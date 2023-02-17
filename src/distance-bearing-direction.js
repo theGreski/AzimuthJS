@@ -12,15 +12,16 @@ function calcDistanceBearing(startLatitude, startLongitude, endLatitude, endLong
 	
 	const R = 6371000; // radius of earth in meters
 
-	function rad(x) {return x * (Math.PI / 180);}
+	// Numeric degrees to radians
+	function deg2rad(d) { return d * (Math.PI / 180); }
 				
 	function degrees(n) { return n * (180 / Math.PI); }
 				
-	function calcBearing(startLatitude, startLongitude, endLatitude, endLongitude) {
-		startLatitude = rad(startLatitude);
-		startLongitude = rad(startLongitude);
-		endLatitude = rad(endLatitude);
-		endLongitude = rad(endLongitude);
+	function getBearing(startLatitude, startLongitude, endLatitude, endLongitude) {
+		startLatitude = deg2rad(startLatitude);
+		startLongitude = deg2rad(startLongitude);
+		endLatitude = deg2rad(endLatitude);
+		endLongitude = deg2rad(endLongitude);
 				
 		var dLong = endLongitude - startLongitude;
 					
@@ -139,11 +140,13 @@ function calcDistanceBearing(startLatitude, startLongitude, endLatitude, endLong
 	}
 
 	// 
-	const dLat  = rad(startLatitude - endLatitude);
-	const dLong = rad(startLongitude - endLongitude);
+	const dLat  = deg2rad(startLatitude - endLatitude);
+	const dLong = deg2rad(startLongitude - endLongitude);
 
-	const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-			Math.cos(rad(startLatitude)) * Math.cos(rad(startLatitude)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+	const a = 
+			Math.sin(dLat/2) * Math.sin(dLat/2) +
+			Math.cos(rad(startLatitude)) * Math.cos(rad(startLatitude)) * 
+			Math.sin(dLong/2) * Math.sin(dLong/2);
 	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 	
 
@@ -154,7 +157,7 @@ function calcDistanceBearing(startLatitude, startLongitude, endLatitude, endLong
 	// Distance in meters
 	output.distance = R * c;
 	
-	const bearing = roundNumber(calcBearing(startLatitude, startLongitude, endLatitude, endLongitude), bearingPrecision);
+	const bearing = roundNumber(getBearing(startLatitude, startLongitude, endLatitude, endLongitude), bearingPrecision);
 	output.bearing = bearing;
 
 	if (directionPrecision != 0) {
