@@ -8,7 +8,7 @@
  * @param {number} directionPrecision  	Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
  * @returns {Object}
  */
-function calcDistanceBearing(startLatitude, startLongitude, endLatitude, endLongitude, bearingPrecision = 0, directionPrecision = 0) {
+function azimuth(startLatitude, startLongitude, endLatitude, endLongitude, bearingPrecision = 0, directionPrecision = 0) {
 	
 	const R = 6371000; // radius of earth in meters
 
