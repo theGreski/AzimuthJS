@@ -28,23 +28,21 @@ Complete list of all parameters, including optional
   * `longitude2` - Longitude of the second point, mandatory, number
   * `units`      - Units of the distance. Accepts only:
 
-    "m" for meters, 
-
-    "km" for kilometers, 
-    
-    "ft" for foots, 
-    "yd" for yards, 
-    "mi" for miles, 
-    "nm" for nautical miles
+    "m" for meters,  
+    "km" for kilometers,  
+    "ft" for foots,  
+    "yd" for yards,  
+    "mi" for miles,  
+    "nm" for nautical miles 
     Optional. Default is meters.
   * `distancePrecision`  - Number of decimal places for distance; Optional. Default is 0; 
   * `bearingPrecision`   - Number of decimal places for azimuth degrees; Optional. Default 0;
   * `directionPrecision` - Compass direction precision; Accepts only:
 
-    0 - No compass dirction,
-    1 - Cardinal directions (N, E, S, W)
-    2 - Intercardinal directions (N, NE, E, SE, S, SW, W, NW)
-    3 - Secondary intercardinal directions (N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW)
+    0 - No compass dirction,  
+    1 - Cardinal directions (N, E, S, W)  
+    2 - Intercardinal directions (N, NE, E, SE, S, SW, W, NW)  
+    3 - Secondary intercardinal directions (N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW)  
     Optional. Default is 1.
 
 
