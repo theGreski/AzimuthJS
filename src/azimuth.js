@@ -16,30 +16,49 @@
  * 											"ft" for foots, 
  * 											"mi" for miles, 
  * 											"nm" for nautical miles
- * @param {number} bearingPrecision  	Degree precision rounding; Default 0;
+ * @param {number} [distancePrecision=0]	Number of decimal places for distance; Default is 0;
+ * @param {number} bearingPrecision  		Number of decimal places for azimuth degrees; Default 0;
  * @param {number} directionPrecision  	Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
  * @returns {Object}
  */
-function azimuth(lat1, lng1, lat2, lng2, bearingPrecision = 0, directionPrecision = 0) {
+function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, bearingPrecision = 0, directionPrecision = 1) {
 	
 	// Validate parameters
 	if (isNaN(lat1) || isNaN(lat2) || isNaN(lng1) || isNaN(lng2) || isNaN(bearingPrecision) || isNaN(directionPrecision)) {
 		throw new Error('Parameter is not a number!');
 	}
 
+	// Validate coordinates
 	if (Math.abs(lat1) > 90 || Math.abs(lat2) > 90 || Math.abs(lng1) > 180 || Math.abs(lng2) > 180) {
 		throw new Error('Parameter exceeding maximal value!');
 	}
 
-	// A globally-average value is usually considered to be 6,371 kilometres (3,959 mi) with a 0.3% variability
-	// radius of earth in meters mean radius
+	// Validate units
+
+	// Validate precisions
+
+	/**
+	 * Mean radius of earth in meters used for calculations.
+	 * 
+	 * A globally-average value is usually considered to be 6,371 kilometres (3,959 mi) with a 0.3% variability
+	 * 
+	 * @type {number}
+	 * @const
+	 */
 	const R = 6371009; 
 
 	// Numeric degrees to radians
 	function deg2rad(d) { return d * (Math.PI / 180); }
 				
 	function degrees(n) { return n * (180 / Math.PI); }
-				
+
+	function roundNumber(number, precision=0) { return +(Math.round(number + "e+" + precision)  + "e-" + precision); }
+	
+	Number.prototype.round = function (value = 0) {
+		let num = new Number(this.valueOf());
+		return +(Math.round(num + "e+" + value)  + "e-" + value);
+	};
+
 	function getBearing(lat1, lng1, lat2, lng2) {
 		startLatitude = deg2rad(lat1);
 		startLongitude = deg2rad(lng1);
@@ -169,10 +188,11 @@ function azimuth(lat1, lng1, lat2, lng2, bearingPrecision = 0, directionPrecisio
 
 		const a = 
 			Math.sin(dLat/2) * Math.sin(dLat/2) +
-			Math.cos(rad(lat1)) * Math.cos(rad(lat1)) * 
+			Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat1)) * 
 			Math.sin(dLong/2) * Math.sin(dLong/2);
 		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
+		// TODO: add suport for various units and precision rounding
 		return R * c; // in meters
 	}
 
@@ -182,11 +202,12 @@ function azimuth(lat1, lng1, lat2, lng2, bearingPrecision = 0, directionPrecisio
 	
 
 	// Create output object
-	var output = {};
+	let output = {};
 
-	
+	//console.log(getDistance(lat1, lng1, lat2, lng2).round(2));
+
 	// Distance in meters
-	output.distance = getDistance(lat1, lng1, lat2, lng2);
+	output.distance = getDistance(lat1, lng1, lat2, lng2).round(distancePrecision);
 	
 	const bearing = roundNumber(getBearing(lat1, lng1, lat2, lng2), bearingPrecision);
 	output.bearing = bearing;
