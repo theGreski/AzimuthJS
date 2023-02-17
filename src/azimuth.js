@@ -15,7 +15,6 @@
  * @param {number} lng1 					longitude of the first point
  * @param {number} lat2 					latitude of the second point
  * @param {number} lng2 					longitude of the second point
- * @param {number} [distancePrecision=0]	Number of decimal places for distance; Default is 0;
  * @param {Units} [units="m"] 				Units of the distance; Default "m" meters. Accepts only:
  * 												"m" for meters, 
  * 												"km" for kilometers, 
@@ -23,6 +22,7 @@
  * 												"yd" for yards, 
  * 												"mi" for miles, 
  * 												"nm" for nautical miles
+ * @param {number} [distancePrecision=0]	Number of decimal places for distance; Default is 0; 
  * @param {number} bearingPrecision  		Number of decimal places for azimuth degrees; Default 0;
  * @param {number} directionPrecision  		Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
  * @returns {Object}	azimuth
@@ -32,7 +32,7 @@
  * @returns {string}	azimuth.direction	Compass direction from point 1 to point 2
  * @throws {Error} 							
  */
-export default function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, units="m", bearingPrecision = 0, directionPrecision = 1) {
+export default function azimuth(lat1, lng1, lat2, lng2, units="m", distancePrecision = 0, bearingPrecision = 0, directionPrecision = 1) {
 	
 	// Validate parameters
 	if (isNaN(lat1) || isNaN(lat2) || isNaN(lng1) || isNaN(lng2) || isNaN(bearingPrecision) || isNaN(directionPrecision)) {
