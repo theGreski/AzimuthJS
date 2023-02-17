@@ -59,7 +59,7 @@ export default function azimuth(lat1, lng1, lat2, lng2, distancePrecision = 0, u
 	const R = 6371009;
 
 	/**
-	 * Numeric degrees to radians
+	 * Decimal degrees to radians
 	 * @param {number} d 
 	 * @returns {number}
 	 */
