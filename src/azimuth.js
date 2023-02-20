@@ -63,12 +63,15 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, be
 	 * @param {number} d 
 	 * @returns {number}
 	 */
-	function deg2rad(d) { return (d * Math.PI / 180); }
+	function deg2rad(d) { return (d * (Math.PI / 180)); }
 				
-	function degrees(n) { return n * (180 / Math.PI); }
+	function degrees(n) { return (n * (180 / Math.PI)); }
 
-	function roundNumber(number, precision=0) { return +(Math.round(number + "e+" + precision)  + "e-" + precision); }
-	
+	/**
+	 * Rounding a number to a specific number of decimal places
+	 * @param {number} value 
+	 * @returns {number}
+	 */
 	Number.prototype.round = function (value = 0) {
 		let num = new Number(this.valueOf());
 		return +(Math.round(num + "e+" + value)  + "e-" + value);
@@ -263,16 +266,13 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, be
 	
 
 	// Create output object
-	let output = {};
+	let output = new Object();
 
-	//console.log(getDistance(lat1, lng1, lat2, lng2).round(2));
-
-	// Distance in meters
 	output.distance = getDistance(lat1, lng1, lat2, lng2).round(distancePrecision);
 
 	output.units = units;
 	
-	const bearing = roundNumber(getBearing(lat1, lng1, lat2, lng2), bearingPrecision);
+	const bearing = getBearing(lat1, lng1, lat2, lng2).round(bearingPrecision);
 	output.bearing = bearing;
 
 	if (directionPrecision !== 0) {
