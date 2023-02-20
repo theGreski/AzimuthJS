@@ -32,7 +32,7 @@
  * @returns {string}	azimuth.direction	Compass direction from point 1 to point 2
  * @throws {Error} 							
  */
-function azimuth(lat1, lng1, lat2, lng2, units="m", distancePrecision = 0, bearingPrecision = 0, directionPrecision = 1) {
+function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, bearingPrecision = 0, directionPrecision = 1} = {}) {
 	
 	// Validate parameters
 	if (isNaN(lat1) || isNaN(lat2) || isNaN(lng1) || isNaN(lng2) || isNaN(bearingPrecision) || isNaN(directionPrecision)) {

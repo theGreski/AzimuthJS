@@ -29,10 +29,17 @@ You can configure the following options:
 - [`bearingPrecision`](#bearingprecision)
 - [`directionPrecision`](#directionprecision)
 
-Here's an example specyfyimg all available options:
+Here's an example specyfying all available options:
 
 ```javascript
-azimuth(51.509865, -0.118092, 40.730610, -73.935242, "mi", 3, 3, 2)
+azimuth(51.509865, -0.118092, 40.730610, -73.935242,  
+  {  
+    units: "mi",  
+    distancePrecision: 3,  
+    bearingPrecision: 3,  
+    directionPrecision: 2  
+  }  
+)
 ```
 
 The output will look like this:
