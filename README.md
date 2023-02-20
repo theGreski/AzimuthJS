@@ -5,6 +5,25 @@ AzimuthJS is a small, stand-alone script to calculate distance, azimuth and bear
 
 South latitudes are negative, east longitudes are positive.
 
+## Installation
+Link `azimuth.min.js` in your HTML :
+
+**Load exact version:**
+```html
+<scripr src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@1.1.0/dist/azimuth.min.js"></script>
+```
+
+**Load a version range instead of an exact version:**
+```html
+<scripr src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@1.1/dist/azimuth.min.js"></script>
+```
+
+**Omit the version completely and use "latest" to load the latest one (not recommended for production usage):**
+```html
+<scripr src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@latest/dist/azimuth.min.js"></script>
+```
+
+
 ## Usage
 The azimuth function accepts coordinates of two points (latitude1, longitude1, latitude2, longitude2). For example London to New York:
 
@@ -116,7 +135,7 @@ A number indicating precision for compas direction measeure.
 
 Accepts only:
 
-  `0` No compass dirction,  
+  `0` No compass direction,  
   `1` Cardinal directions (N, E, S, W)  
   `2` Intercardinal directions (N, NE, E, SE, S, SW, W, NW)  
   `3` Secondary intercardinal directions (N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW)
