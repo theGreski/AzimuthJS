@@ -1,38 +1,50 @@
 /**
  * @typedef {"m" | "km" | "ft" | "yd" | "mi" | "nm"} Units
  */
+/**
+ * @typedef {"great-cicrle" | "rhumb-line"} BearingMethod
+ */
 
 /**
  * Calculate the distance, bearing and direction between two coordinates.
  * 
- * Distance calculations on the basis of a spherical earth (ignoring ellipsoidal effects) *which is accurate enough* for most purposes… 
+ * Distance and bearing can use "Great-Circle" or "Rhumb line" method.
+ * Great Circle calculations on the basis of a spherical earth (ignoring ellipsoidal effects) *which is accurate enough* for most purposes… 
  * In fact, the earth is very slightly ellipsoidal; using a spherical model gives errors typically up to 0.3%.
  * 
- * It uses the ‘haversine’ formula to calculate the great-circle distance between two points (also known as the ‘crow-line’) 
+ * Great Circle distance uses the ‘haversine’ formula to calculate distance between two points (also known as the ‘crow-line’) 
  * - that is, the shortest distance over the earth’s surface.
+ * 
+ * 
+ * With 'great-circle' your current heading will vary as you follow a great circle path (orthodrome); 
+ * The final heading will differ from the initial heading. This will provide initial heading.
+ * A ‘rhumb line’ (or loxodrome) is a path of constant bearing but are generally longer than great-circle (sometimes up to 30%)
  * 
  * @param {number} lat1 					latitude of the first point
  * @param {number} lng1 					longitude of the first point
  * @param {number} lat2 					latitude of the second point
  * @param {number} lng2 					longitude of the second point
- * @param {Units} [units="m"] 				Units of the distance; Default "m" meters. Accepts only:
+ * @param {Object} options
+ * @param {Units} [options.units="m"] 				Units of the distance; Default "m" meters. Accepts only:
  * 												"m" for meters, 
  * 												"km" for kilometers, 
  * 												"ft" for foots, 
  * 												"yd" for yards, 
  * 												"mi" for miles, 
  * 												"nm" for nautical miles
- * @param {number} [distancePrecision=0]	Number of decimal places for distance; Default is 0; 
- * @param {number} bearingPrecision  		Number of decimal places for azimuth degrees; Default 0;
- * @param {number} directionPrecision  		Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
+ * @param {number} [options.distancePrecision=0]	Number of decimal places for distance; Default is 0; 
+ * @param {string} [options.method="great-circle"] 	Method of calculation; Accepts only "great-circle" and "rhumb-line"; Default "great-circle";
+ * @param {number} [options.bearingPrecision=0]  		Number of decimal places for azimuth degrees; Default 0;
+ * @param {number} [options.directionPrecision=1]  		Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
  * @returns {Object}	azimuth
  * @returns {number}	azimuth.distance	Distance in units provided
  * @returns {string}	azimuth.units		Units of the distance
  * @returns {number}	azimuth.bearing		Angle bearing from point 1 to point 2
+ * @returns {string} 	azimuth.bearingMethod 	Method used to calculate bearing
  * @returns {string}	azimuth.direction	Compass direction from point 1 to point 2
  * @throws {Error} 							
  */
-function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, bearingPrecision = 0, directionPrecision = 1} = {}) {
+function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, method = "great-circle", bearingPrecision = 0, directionPrecision = 1} = {}) {
 	
 	// Validate parameters
 	if (isNaN(lat1) || isNaN(lat2) || isNaN(lng1) || isNaN(lng2) || isNaN(bearingPrecision) || isNaN(directionPrecision)) {
@@ -47,6 +59,8 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, be
 	// TODO: Validate units
 
 	// TODO: Validate precisions
+
+	// TODO: Validate calculation method
 
 	/**
 	 * Mean radius of earth in meters used for calculations.
@@ -77,26 +91,49 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, be
 		return +(Math.round(num + "e+" + value)  + "e-" + value);
 	};
 
-	function getBearing(lat1, lng1, lat2, lng2) {
-		startLatitude = deg2rad(lat1);
-		startLongitude = deg2rad(lng1);
-		endLatitude = deg2rad(lat2);
-		endLongitude = deg2rad(lng2);
-				
-		var dLong = endLongitude - startLongitude;
+	/**
+	 * Get bearing using rhumb line method
+	 */
+	function getBearingRhumbLine(lat1, lng1, lat2, lng2) {
+		
+		const rLat1 = deg2rad(lat1);
+		const rLat2 = deg2rad(lat2);
+		let dLong = deg2rad(lng2 - lng1);
 					
-		var dPhi = Math.log(Math.tan(endLatitude / 2.0 + Math.PI / 4.0) / Math.tan(startLatitude / 2.0 + Math.PI / 4.0));
+		const dPhi = Math.log( Math.tan( Math.PI / 4 + rLat2  / 2) / Math.tan(Math.PI / 4 + rLat1 / 2));
+		
 		if (Math.abs(dLong) > Math.PI) {
-			if (dLong > 0.0)
-				dLong = -(2.0 * Math.PI - dLong);
+			if (dLong > 0)
+				dLong = -(2 * Math.PI - dLong);
 			else
-				dLong = (2.0 * Math.PI + dLong);
+				dLong = (2 * Math.PI + dLong);
 		}
-					
-		return (degrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0;
+		const radians = Math.atan2(dLong, dPhi);
+		const brng =  (degrees(radians) + 360) % 360; // in degrees
+
+		return brng;
+		
+	}
+	/**
+	 * Get bearing using great circle method
+	 */
+	function getBearingGreatCircle(lat1, lng1, lat2, lng2) {
+
+		const rLat1 = deg2rad(lat1);
+		const rLat2 = deg2rad(lat2);
+		const dLong = deg2rad(lng2 - lng1);
+
+		const y = Math.sin(dLong) * Math.cos(rLat2);
+		const x = Math.cos(rLat1) * Math.sin(rLat2) -
+				  Math.sin(rLat1) * Math.cos(rLat2) * Math.cos(dLong);
+		const radians = Math.atan2(y, x);
+		const brng = (degrees(radians) + 360) % 360; // in degrees
+
+		return brng;
+
 	}
 
-	function getDirection(degrees, precision) {
+	function getCompassDirection(degrees, precision) {
 		
 
 		if (isNaN(degrees) || isNaN(precision)) {
@@ -205,10 +242,9 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, be
 	 * @param {number} lng1 	In degrees
 	 * @param {number} lat2 	In degrees
 	 * @param {number} lng2 	In degrees
-	 * @param {Units} units 
 	 * @returns {number}
 	 */
-	function getDistance(lat1, lng1, lat2, lng2, units) {
+	function getDistanceGreatCircle(lat1, lng1, lat2, lng2) {
 
 		const rLat1	= deg2rad(lat1); 		// Latitude1 in radians
 		const rLat2	= deg2rad(lat2); 		// Latitude2 in radians
@@ -222,9 +258,38 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, be
 		
 		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-		// TODO: add suport for various units and precision rounding
+		return (R * c);
+	}
 
-		return metersConverter((R * c), units);
+	/**
+	 * Inverse Gudermannian formula to calculate the great-circle distance between two points
+	 * @param {number} lat1 	In degrees
+	 * @param {number} lng1 	In degrees
+	 * @param {number} lat2 	In degrees
+	 * @param {number} lng2 	In degrees
+	 * @returns {number}
+	 */
+	function getDistanceRhumbLine(lat1, lng1, lat2, lng2) {
+		const rLat1	= deg2rad(lat1); 		// Latitude1 in radians
+		const rLat2	= deg2rad(lat2); 		// Latitude2 in radians
+		const dLat  = deg2rad(lat1 - lat2); // Latitude difference in radians
+		const dLong = deg2rad(lng1 - lng2); // Longitude difference in radians
+
+		const dPhi = Math.log(Math.tan(Math.PI / 4 + rLat2 / 2) / Math.tan(Math.PI / 4 + rLat1 / 2));
+		const q = Math.abs(dPhi) > 10e-12 ? dLat / dPhi : Math.cos(rLat1); // E-W course becomes ill-conditioned with 0/0
+
+		// if dLon over 180° take shorter rhumb line across the anti-meridian:
+		if (Math.abs(dLong) > Math.PI) {
+			if (dLong > 0)
+				dLong = -(2 * Math.PI - dLong);
+			else
+				dLong = (2 * Math.PI + dLong);
+		}
+
+		const dist = Math.sqrt(dLat * dLat + q * q * dLong * dLong) * R;
+
+		return dist;
+
 	}
 
 	/**
@@ -265,18 +330,19 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, be
 	let output = new Object();
 
 	// Add distance to the object
-	output.distance = getDistance(lat1, lng1, lat2, lng2).round(distancePrecision);
+	output.distance = (method === "rhumb-line" ? getDistanceRhumbLine(lat1, lng1, lat2, lng2) : getDistanceGreatCircle(lat1, lng1, lat2, lng2)).round(distancePrecision);
 
 	// Add units of measure to the object
 	output.units = units;
 	
 	// Add bearing to the object
-	const bearing = getBearing(lat1, lng1, lat2, lng2).round(bearingPrecision);
+	const bearing = metersConverter(method === "rhumb-line" ? getBearingRhumbLine(lat1, lng1, lat2, lng2) : getBearingGreatCircle(lat1, lng1, lat2, lng2), units).round(bearingPrecision);
 	output.bearing = bearing;
+	output.method = method;
 
 	// Add compass direction to the object
 	if (directionPrecision !== 0) {
-		output.direction = getDirection(bearing, directionPrecision);
+		output.direction = getCompassDirection(bearing, directionPrecision);
 	}
 
 	return output; 

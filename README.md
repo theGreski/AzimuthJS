@@ -18,6 +18,7 @@ The output will look like this:
     distance: 55648932,
     units: "m",
     bearing: 258,
+    bearingMethod
     direction: "W"
 }
 ```
