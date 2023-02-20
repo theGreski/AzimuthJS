@@ -44,9 +44,9 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, be
 		throw new Error('Parameter exceeding maximal value!');
 	}
 
-	// Validate units
+	// TODO: Validate units
 
-	// Validate precisions
+	// TODO: Validate precisions
 
 	/**
 	 * Mean radius of earth in meters used for calculations.
@@ -261,24 +261,23 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, be
 	}
 
 	
-
-	
-	
-
 	// Create output object
 	let output = new Object();
 
+	// Add distance to the object
 	output.distance = getDistance(lat1, lng1, lat2, lng2).round(distancePrecision);
 
+	// Add units of measure to the object
 	output.units = units;
 	
+	// Add bearing to the object
 	const bearing = getBearing(lat1, lng1, lat2, lng2).round(bearingPrecision);
 	output.bearing = bearing;
 
+	// Add compass direction to the object
 	if (directionPrecision !== 0) {
 		output.direction = getDirection(bearing, directionPrecision);
 	}
-
 
 	return output; 
 
