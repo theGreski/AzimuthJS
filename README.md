@@ -104,9 +104,9 @@ Accepts only:
 - **Default**: `m`
 
 
-### `methodformula`
+### `formula`
 
-A string indicating calculation methodformula.
+A string indicating calculation formula.
 
 Accepts only:
   `great-circle` for Great Circle,
@@ -117,21 +117,21 @@ Accepts only:
 
 ### `distancePrecision`
 
-A number indicating number of rounding decimal places (precision) for distance measeure.
+A number indicating number of rounding decimal places (precision) for distance measure.
 
 - **Default**: `0`
 
 
 ### `bearingPrecision`
 
-A number indicating number of rounding decimal places (precision) for bearing measeure.
+A number indicating number of rounding decimal places (precision) for bearing measure.
 
 - **Default**: `0`
 
 
 ### `directionPrecision`
 
-A number indicating precision for compas direction measeure.
+A number indicating precision for compass direction measure.
 
 Accepts only:
 
