@@ -2,13 +2,13 @@
  * @typedef {"m" | "km" | "ft" | "yd" | "mi" | "nm"} Units
  */
 /**
- * @typedef {"great-cicrle" | "rhumb-line"} BearingMethod
+ * @typedef {"great-cicrle" | "rhumb-line"} Formula
  */
 
 /**
  * Calculate the distance, bearing and direction between two coordinates.
  * 
- * Distance and bearing can use "Great-Circle" or "Rhumb line" method.
+ * Distance and bearing can use "Great-Circle" or "Rhumb line" formulas.
  * Great Circle calculations on the basis of a spherical earth (ignoring ellipsoidal effects) *which is accurate enough* for most purposes… 
  * In fact, the earth is very slightly ellipsoidal; using a spherical model gives errors typically up to 0.3%.
  * 
@@ -33,7 +33,7 @@
  * 												"mi" for miles, 
  * 												"nm" for nautical miles
  * @param {number} [options.distancePrecision=0]	Number of decimal places for distance; Default is 0; 
- * @param {string} [options.method="great-circle"] 	Method of calculation; Accepts only "great-circle" and "rhumb-line"; Default "great-circle";
+ * @param {Formula} [options.formula="great-circle"] 	Formula of calculation; Accepts only "great-circle" and "rhumb-line"; Default "great-circle";
  * @param {number} [options.bearingPrecision=0]  		Number of decimal places for azimuth degrees; Default 0;
  * @param {number} [options.directionPrecision=1]  		Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
  * @returns {Object}	azimuth
@@ -44,7 +44,7 @@
  * @returns {string}	azimuth.direction	Compass direction from point 1 to point 2
  * @throws {Error} 							
  */
-function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, method = "great-circle", bearingPrecision = 0, directionPrecision = 1} = {}) {
+function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, formula = "great-circle", bearingPrecision = 0, directionPrecision = 1} = {}) {
 	
 	// Validate parameters
 	if (isNaN(lat1) || isNaN(lat2) || isNaN(lng1) || isNaN(lng2) || isNaN(bearingPrecision) || isNaN(directionPrecision)) {
@@ -97,7 +97,7 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, me
 	};
 
 	/**
-	 * Get bearing using rhumb line method
+	 * Get bearing using rhumb line formula
 	 */
 	function getBearingRhumbLine(lat1, lng1, lat2, lng2) {
 		
@@ -120,7 +120,7 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, me
 		
 	}
 	/**
-	 * Get bearing using great circle method
+	 * Get bearing using great circle formula
 	 */
 	function getBearingGreatCircle(lat1, lng1, lat2, lng2) {
 
@@ -335,15 +335,16 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, me
 	let output = new Object();
 
 	// Add distance to the object
-	output.distance = (method === "rhumb-line" ? getDistanceRhumbLine(lat1, lng1, lat2, lng2) : getDistanceGreatCircle(lat1, lng1, lat2, lng2)).round(distancePrecision);
+	output.distance = (formula === "rhumb-line" ? getDistanceRhumbLine(lat1, lng1, lat2, lng2) : getDistanceGreatCircle(lat1, lng1, lat2, lng2)).round(distancePrecision);
 
 	// Add units of measure to the object
 	output.units = units;
 	
 	// Add bearing to the object
-	const bearing = metersConverter(method === "rhumb-line" ? getBearingRhumbLine(lat1, lng1, lat2, lng2) : getBearingGreatCircle(lat1, lng1, lat2, lng2), units).round(bearingPrecision);
+	const bearing = metersConverter(formula === "rhumb-line" ? getBearingRhumbLine(lat1, lng1, lat2, lng2) : getBearingGreatCircle(lat1, lng1, lat2, lng2), units).round(bearingPrecision);
 	output.bearing = bearing;
-	output.method = method;
+	
+	output.formula = formula;
 
 	// Add compass direction to the object
 	if (directionPrecision !== 0) {
