@@ -78,7 +78,12 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, me
 	 * @returns {number}
 	 */
 	function deg2rad(d) { return (d * (Math.PI / 180)); }
-				
+	
+	/**
+	 * Radians to degrees
+	 * @param {number} n 
+	 * @returns 
+	 */
 	function degrees(n) { return (n * (180 / Math.PI)); }
 
 	/**
