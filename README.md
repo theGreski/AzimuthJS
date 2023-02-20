@@ -1,5 +1,5 @@
 # AzimuthJS
-![GitHub](https://img.shields.io/github/license/grekowski/AzimuthJS?style=plastic)
+![GitHub](https://img.shields.io/github/license/grekowski/AzimuthJS?style=plastic)  https://img.shields.io/github/languages/top/grekowski/AzimuthJS
 
 AzimuthJS is a small, stand-alone script to calculate distance, azimuth and bearing between two points (given the latitude/longitude of those points).
 
