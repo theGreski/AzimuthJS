@@ -1,4 +1,6 @@
 # AzimuthJS
+![GitHub](https://img.shields.io/github/license/grekowski/AzimuthJS?style=plastic)
+
 AzimuthJS is a small, stand-alone script to calculate distance, azimuth and bearing between two points (given the latitude/longitude of those points).
 
 South latitudes are negative, east longitudes are positive.
