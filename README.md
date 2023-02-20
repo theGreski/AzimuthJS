@@ -57,7 +57,7 @@ try {
 You can configure the following options:
 
 - [`units`](#units)
-- [`method`](#method)
+- [`formula`](#formula)
 - [`distancePrecision`](#distanceprecision)
 - [`bearingPrecision`](#bearingprecision)
 - [`directionPrecision`](#directionprecision)
@@ -68,7 +68,7 @@ Here's an example specyfying all available options:
 azimuth(51.509865, -0.118092, 40.730610, -73.935242,  
   {  
     units: "mi",  
-    method: "great-circle",  
+    formula: "great-circle",  
     distancePrecision: 3,  
     bearingPrecision: 3,  
     directionPrecision: 2  
@@ -79,7 +79,7 @@ azimuth(51.509865, -0.118092, 40.730610, -73.935242,
 The output will look like this:
 ```javascript
 {
-    method: "great-circle",
+    formula: "great-circle",
     distance: 5564892.653,
     units: "mi",
     bearing: 258.049,
@@ -104,9 +104,9 @@ Accepts only:
 - **Default**: `m`
 
 
-### `method`
+### `methodformula`
 
-A string indicating calculation method.
+A string indicating calculation methodformula.
 
 Accepts only:
   `great-circle` for Great Circle,
