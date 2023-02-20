@@ -20,6 +20,16 @@ The output will look like this:
 }
 ```
 
+Or wrap aroud try catch block to find any validation isues:
+
+```javascript
+try {
+  azimuth(9999, -200, "abc", null)
+} catch (e) {
+  console.error(e)
+}
+```
+
 ## Options
 
 You can configure the following options:
