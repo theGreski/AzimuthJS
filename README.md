@@ -8,7 +8,7 @@ South latitudes are negative, east longitudes are positive.
 ## Installation
 Link `azimuth.min.js` in your HTML :
 
-**Load exact version:**
+**Load exact version:**  Latest version is ![GitHub](https://img.shields.io/github/v/release/grekowski/AzimuthJS?style=plastic&label=)
 ```html
 <script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@1.1.0/dist/azimuth.min.js"></script>
 ```
