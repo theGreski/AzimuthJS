@@ -2,7 +2,7 @@
  * @typedef {"m" | "km" | "ft" | "yd" | "mi" | "nm"} Units
  */
 /**
- * @typedef {"great-cicrle" | "rhumb-line"} Formula
+ * @typedef {"great-circle" | "rhumb-line"} Formula
  */
 
 /**
@@ -67,7 +67,7 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 	}
 
 	// Validate calculation formula type
-	if (!["great-cicrle", "rhumb-line"].includes(formula)) {
+	if (!["great-circle", "rhumb-line"].includes(formula)) {
 		throw new Error('Calculation formula type parameter not supported!');
 	}
 
@@ -223,8 +223,8 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 			var swTo  = sswTo + degrees_of_rotation;
 			var wswTo = swTo +  degrees_of_rotation;
 			var wTo   = wswTo + degrees_of_rotation;
-			var wwTo  = wTo +   degrees_of_rotation;
-			var nwTo  = wwTo +  degrees_of_rotation;
+			var wnwTo  = wTo +   degrees_of_rotation;
+			var nwTo  = wnwTo +  degrees_of_rotation;
 			var nnwTo = nwTo +  degrees_of_rotation;
 
 			if (degrees <= nTo)   return "N";
@@ -249,7 +249,54 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 
 		return "";
 	}
-	
+	function getCompassDirectionNew(degrees, precision) {
+		
+
+		if (isNaN(degrees) || isNaN(precision)) {
+			throw new Error('Parameter is not a number!');
+			return;
+		}
+
+		if (degrees < 0 || degrees > 360) {
+			throw new Error('Parameter outside of range!');
+			return;
+		}
+
+		if (precision < 1 || precision > 3) {
+			throw new Error('Parameter outside of range!');
+			return;
+		}
+
+		// Set default percision list
+		let	directions = ["N",	"NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+		
+		// Default precision number of directions
+		// cardinal directions
+		let maxDirections = 4;
+
+		// Intercardinal directions
+		if (precision === 2) {
+			maxDirections = 8;
+		}
+		// secondary intercardinal direction
+		if (precision === 3) {
+			maxDirections = 16; // Lenght of the list of directions
+		}
+		
+		let unitAngle = 360 / maxDirections;
+		
+		let indexMultiplier = directions.length / maxDirections;
+
+
+		let index = Math.round(degrees / unitAngle) * indexMultiplier;
+		
+		// If over the last direction, display first
+		if (index => directions.length) index = 0;
+
+		return directions[index];
+
+	}
+
 	/**
 	 * Havesine formula to calculate the great-circle distance between two points
 	 * @param {number} lat1 	In degrees
@@ -357,7 +404,9 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 
 	// Add compass direction to the object
 	if (directionPrecision !== 0) {
-		output.direction = getCompassDirection(bearing, directionPrecision);
+		//output.direction = getCompassDirection(bearing, directionPrecision);
+		output.direction = getCompassDirectionNew(bearing, directionPrecision);
+
 	}
 
 	return output; 
