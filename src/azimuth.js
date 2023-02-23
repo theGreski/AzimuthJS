@@ -56,13 +56,16 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 		throw new Error('Latitude/Longitude parameter exceeding maximal value!');
 	}
 
-	// TODO: Validate units
+	// TODO: Validate precision
 
-	// TODO: Validate precisions
+	// Validate output distance units
+	if (!["m", "km", "ft", "yd", "mi", "nm"].includes(units)) {
+		throw new Error('Units parameter type not supported!');
+	}
 
 	// Validate calculation formula type
 	if (!["great-cicrle", "rhumb-line"].includes(formula)) {
-		throw new Error('Calculation formula type not supported!');
+		throw new Error('Calculation formula type parameter not supported!');
 	}
 
 	/**
