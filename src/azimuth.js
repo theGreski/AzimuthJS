@@ -56,7 +56,10 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 		throw new Error('Latitude/Longitude parameter exceeding maximal value!');
 	}
 
-	// TODO: Validate precision
+	// Validate precisions rounding
+	if (isNaN(distancePrecision) || isNaN(bearingPrecision) || distancePrecision > 15 || bearingPrecision > 15) {
+		throw new Error('Precision parameter is not a number or exceeds it\'s maximum value of 15!');
+	}
 
 	// Validate output distance units
 	if (!["m", "km", "ft", "yd", "mi", "nm"].includes(units)) {
