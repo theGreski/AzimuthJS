@@ -48,19 +48,22 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 	
 	// Validate parameters
 	if (isNaN(lat1) || isNaN(lat2) || isNaN(lng1) || isNaN(lng2) || isNaN(bearingPrecision) || isNaN(directionPrecision)) {
-		throw new Error('Parameter is not a number!');
+		throw new Error('Latitude/Longitude parameter is not a number!');
 	}
 
 	// Validate coordinates
 	if (Math.abs(lat1) > 90 || Math.abs(lat2) > 90 || Math.abs(lng1) > 180 || Math.abs(lng2) > 180) {
-		throw new Error('Parameter exceeding maximal value!');
+		throw new Error('Latitude/Longitude parameter exceeding maximal value!');
 	}
 
 	// TODO: Validate units
 
 	// TODO: Validate precisions
 
-	// TODO: Validate calculation method
+	// Validate calculation formula type
+	if (!["great-cicrle", "rhumb-line"].includes(formula)) {
+		throw new Error('Calculation formula type not supported!');
+	}
 
 	/**
 	 * Mean radius of earth in meters used for calculations.
