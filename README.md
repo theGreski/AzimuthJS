@@ -15,7 +15,7 @@ Link `azimuth.min.js` in your HTML :
 
 **Load a version range instead of an exact version:**
 ```html
-<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@1.1/dist/azimuth.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@1.2/dist/azimuth.min.js"></script>
 ```
 
 **Omit the version completely and use "latest" to load the latest one (not recommended for production usage):**
