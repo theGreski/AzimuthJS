@@ -10,7 +10,7 @@ Link `azimuth.min.js` in your HTML :
 
 **Load exact version:**  Latest version is ![GitHub](https://img.shields.io/github/v/release/grekowski/AzimuthJS?style=plastic&label=)
 ```html
-<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@1.2.1/dist/azimuth.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@1.2.2/dist/azimuth.min.js"></script>
 ```
 
 **Load a version range instead of an exact version:**
