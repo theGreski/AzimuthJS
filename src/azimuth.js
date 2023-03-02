@@ -110,6 +110,9 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 	 */
 	function getBearingRhumbLine(lat1, lng1, lat2, lng2) {
 		
+		// if coordinates are the same, distance is zero (skip calculations)
+		if (lat1 === lat2 && lng1 === lng2) return 0;
+
 		const rLat1 = deg2rad(lat1);
 		const rLat2 = deg2rad(lat2);
 		let dLong = deg2rad(lng2 - lng1);
@@ -307,6 +310,9 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 	 */
 	function getDistanceGreatCircle(lat1, lng1, lat2, lng2) {
 
+		// if coordinates are the same, distance is zero (skip calculations)
+		if (lat1 === lat2 && lng1 === lng2) return 0;
+
 		const rLat1	= deg2rad(lat1); 		// Latitude1 in radians
 		const rLat2	= deg2rad(lat2); 		// Latitude2 in radians
 		const dLat  = deg2rad(lat1 - lat2); // Latitude difference in radians
@@ -331,6 +337,10 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 	 * @returns {number}
 	 */
 	function getDistanceRhumbLine(lat1, lng1, lat2, lng2) {
+
+		// if coordinates are the same, distance is zero (skip calculations)
+		if (lat1 === lat2 && lng1 === lng2) return 0;
+
 		const rLat1	= deg2rad(lat1); 		// Latitude1 in radians
 		const rLat2	= deg2rad(lat2); 		// Latitude2 in radians
 		const dLat  = deg2rad(lat1 - lat2); // Latitude difference in radians
@@ -391,22 +401,21 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 	let output = new Object();
 
 	// Add distance to the object
-	output.distance = (formula === "rhumb-line" ? getDistanceRhumbLine(lat1, lng1, lat2, lng2) : getDistanceGreatCircle(lat1, lng1, lat2, lng2)).round(distancePrecision);
+	const distance = metersConverter(formula === "rhumb-line" ? getDistanceRhumbLine(lat1, lng1, lat2, lng2) : getDistanceGreatCircle(lat1, lng1, lat2, lng2), units).round(distancePrecision);
+	output.distance = distance;
 
 	// Add units of measure to the object
 	output.units = units;
 	
 	// Add bearing to the object
-	const bearing = metersConverter(formula === "rhumb-line" ? getBearingRhumbLine(lat1, lng1, lat2, lng2) : getBearingGreatCircle(lat1, lng1, lat2, lng2), units).round(bearingPrecision);
+	const bearing = distance == 0 ? "" : (formula === "rhumb-line" ? getBearingRhumbLine(lat1, lng1, lat2, lng2) : getBearingGreatCircle(lat1, lng1, lat2, lng2)).round(bearingPrecision)
 	output.bearing = bearing;
 	
 	output.formula = formula;
 
 	// Add compass direction to the object
 	if (directionPrecision !== 0) {
-		//output.direction = getCompassDirection(bearing, directionPrecision);
-		output.direction = getCompassDirectionNew(bearing, directionPrecision);
-
+		output.direction = distance == 0 ? "" : getCompassDirectionNew(bearing, directionPrecision);
 	}
 
 	return output; 
