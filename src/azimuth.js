@@ -1,4 +1,12 @@
 /**
+ * @typedef {Object} 	Azimuth
+ * @property {number}	distance	Distance in units provided
+ * @property {string}	units		Units of the distance
+ * @property {number}	bearing		Angle bearing from point 1 to point 2
+ * @property {string} 	formula 	Method used to calculate bearing
+ * @property {string}	direction	Compass direction from point 1 to point 2
+ */
+/**
  * @typedef {"m" | "km" | "ft" | "yd" | "mi" | "nm"} Units
  */
 /**
@@ -32,19 +40,14 @@
  * 												"yd" for yards, 
  * 												"mi" for miles, 
  * 												"nm" for nautical miles
- * @param {number} [options.distancePrecision=0]	Number of decimal places for distance; Default is 0; 
+ * @param {number} [options.distancePrecision=0]		Number of decimal places for distance; Default is 0; 
  * @param {Formula} [options.formula="great-circle"] 	Formula of calculation; Accepts only "great-circle" and "rhumb-line"; Default "great-circle";
  * @param {number} [options.bearingPrecision=0]  		Number of decimal places for azimuth degrees; Default 0;
- * @param {number} [options.directionPrecision=1]  		Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
- * @returns {Object}	azimuth
- * @returns {number}	azimuth.distance	Distance in units provided
- * @returns {string}	azimuth.units		Units of the distance
- * @returns {number}	azimuth.bearing		Angle bearing from point 1 to point 2
- * @returns {string} 	azimuth.bearingMethod 	Method used to calculate bearing
- * @returns {string}	azimuth.direction	Compass direction from point 1 to point 2
+ * @param {number} [options.directionPrecision=2]  		Direction precision; Accepts only 0, 1, 2 and 3; 0 disables the parameter; Default 1;
+ * @returns {Azimuth}
  * @throws {Error} 							
  */
-function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, formula = "great-circle", bearingPrecision = 0, directionPrecision = 1} = {}) {
+function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, formula = "great-circle", bearingPrecision = 0, directionPrecision = 2} = {}) {
 	
 	// Validate parameters
 	if (isNaN(lat1) || isNaN(lat2) || isNaN(lng1) || isNaN(lng2) || isNaN(bearingPrecision) || isNaN(directionPrecision)) {
@@ -76,7 +79,7 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 	 * 
 	 * A globally-average value is usually considered to be 6,371 kilometres (3,959 mi) with a 0.3% variability
 	 * 
-	 * @type {number}
+	 * @type {Number}
 	 * @const
 	 */
 	const R = 6371009;
@@ -150,109 +153,13 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 
 	}
 
+	/**
+	 * Convert bearing degrees to compass direction
+	 * @param {number} degrees 
+	 * @param {number} precision 
+	 * @returns {string}
+	 */
 	function getCompassDirection(degrees, precision) {
-		
-
-		if (isNaN(degrees) || isNaN(precision)) {
-			throw new Error('Parameter is not a number!');
-			return;
-		}
-
-		if (degrees < 0 || degrees > 360) {
-			throw new Error('Parameter outside of range!');
-			return;
-		}
-
-		if (precision < 1 || precision > 3) {
-			throw new Error('Parameter outside of range!');
-			return;
-		}
-
-
-		// cardinal directions
-		if (precision == 1) {
-			
-			var degrees_of_rotation = 360 / 4;
-			var nTo = degrees_of_rotation / 2;
-			var eTo = nTo + degrees_of_rotation;
-			var sTo = eTo + degrees_of_rotation;
-			var wTo = sTo + degrees_of_rotation;
-			
-			if (degrees <= nTo) return "N";
-			if (degrees <= eTo) return "E";
-			if (degrees <= sTo) return "S";
-			if (degrees <= wTo) return "W";
-			if (degrees >  wTo) return "N";
-		}
-
-		// Intercardinal directions
-		if (precision == 2) {
-
-			var degrees_of_rotation = 360 / 8;
-			var nTo = degrees_of_rotation / 2;
-			var neTo = nTo + degrees_of_rotation;
-			var eTo = neTo + degrees_of_rotation;
-			var seTo = eTo + degrees_of_rotation;
-			var sTo = seTo + degrees_of_rotation;
-			var swTo = sTo + degrees_of_rotation;
-			var wTo = swTo + degrees_of_rotation;
-			var nwTo = wTo + degrees_of_rotation;
-
-			if (degrees <= nTo) return "N";
-			if (degrees >  nTo  && degrees <= neTo) return "NE";
-			if (degrees >  neTo && degrees <= eTo)  return "E";
-			if (degrees >  eTo  && degrees <= seTo) return "SE";
-			if (degrees >  seTo && degrees <= sTo)  return "S";
-			if (degrees >  sTo  && degrees <= swTo) return "SW";
-			if (degrees >  swTo && degrees <= wTo)  return "W";
-			if (degrees >  wTo  && degrees <= nwTo) return "NW";
-			if (degrees >  nwTo) return "N";
-		}
-
-		// secondary intercardinal direction
-		if (precision == 3) {
-
-			var degrees_of_rotation = 360 / 16;
-			var nTo   = degrees_of_rotation / 2;
-			var nneTo = nTo +   degrees_of_rotation;
-			var neTo  = nneTo + degrees_of_rotation;
-			var eneTo = neTo +  degrees_of_rotation;
-			var eTo   = eneTo + degrees_of_rotation;
-			var eseTo = eTo +   degrees_of_rotation;
-			var seTo  = eseTo + degrees_of_rotation;
-			var sseTo = seTo +  degrees_of_rotation;
-			var sTo   = sseTo + degrees_of_rotation;
-			var sswTo = sTo +   degrees_of_rotation;
-			var swTo  = sswTo + degrees_of_rotation;
-			var wswTo = swTo +  degrees_of_rotation;
-			var wTo   = wswTo + degrees_of_rotation;
-			var wnwTo  = wTo +   degrees_of_rotation;
-			var nwTo  = wnwTo +  degrees_of_rotation;
-			var nnwTo = nwTo +  degrees_of_rotation;
-
-			if (degrees <= nTo)   return "N";
-			if (degrees <= nneTo) return "NNE";
-			if (degrees <= neTo)  return "NE";
-			if (degrees <= eneTo) return "ENE";
-			if (degrees <= eTo)   return "E";
-			if (degrees <= eseTo) return "ESE";
-			if (degrees <= seTo)  return "SE";
-			if (degrees <= sseTo) return "SSE";
-			if (degrees <= sTo)   return "S";
-			if (degrees <= sswTo) return "SSW";
-			if (degrees <= swTo)  return "SW";
-			if (degrees <= wswTo) return "WSW";
-			if (degrees <= wTo)   return "W";
-			if (degrees <= wnwTo) return "WNW";
-			if (degrees <= nwTo)  return "NW";
-			if (degrees <= nnwTo) return "NNW";
-			if (degrees >  nnwTo) return "N";
-
-		}
-
-		return "";
-	}
-	function getCompassDirectionNew(degrees, precision) {
 		
 
 		if (isNaN(degrees) || isNaN(precision)) {
@@ -415,7 +322,7 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 
 	// Add compass direction to the object
 	if (directionPrecision !== 0) {
-		output.direction = distance == 0 ? "" : getCompassDirectionNew(bearing, directionPrecision);
+		output.direction = distance == 0 ? "" : getCompassDirection(bearing, directionPrecision);
 	}
 
 	return output; 

@@ -140,7 +140,7 @@ Accepts only:
   `2` Intercardinal directions (N, NE, E, SE, S, SW, W, NW)  
   `3` Secondary intercardinal directions (N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW)
 
-- **Default**: `1`
+- **Default**: `2`
 
 
 
