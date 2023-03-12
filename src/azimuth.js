@@ -104,7 +104,7 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 	 * @returns {number}
 	 */
 	Number.prototype.round = function (value = 0) {
-		let num = new Number(this.valueOf());
+		const num = new Number(this.valueOf());
 		return +(Math.round(num + "e+" + value)  + "e-" + value);
 	};
 
@@ -178,7 +178,7 @@ function azimuth(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, fo
 		}
 
 		// Set default percision list
-		let	directions = ["N",	"NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+		const	directions = ["N",	"NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
 		
 		// Default precision number of directions
 		// cardinal directions
