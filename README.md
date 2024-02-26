@@ -1,7 +1,7 @@
 # AzimuthJS
 ![GitHub](https://img.shields.io/github/license/grekowski/AzimuthJS)  ![GitHub](https://img.shields.io/github/languages/top/grekowski/AzimuthJS)
 
-AzimuthJS is a small, stand-alone script to calculate distance, azimuth and bearing between two points (given the latitude/longitude of those points).
+AzimuthJS is a small, stand-alone script to calculate distance, azimuth and direction between two points (given the latitude/longitude of those points).
 
 South latitudes are negative, east longitudes are positive.
 
@@ -10,12 +10,12 @@ Link `azimuth.min.js` in your HTML :
 
 **Load exact version:**  Latest version is ![GitHub](https://img.shields.io/github/v/release/grekowski/AzimuthJS?style=plastic&label=)
 ```html
-<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@1.2.2/dist/azimuth.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@2.0.0/dist/azimuth.min.js"></script>
 ```
 
 **Load a version range instead of an exact version:**
 ```html
-<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@1.2/dist/azimuth.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@2.0/dist/azimuth.min.js"></script>
 ```
 
 **Omit the version completely and use "latest" to load the latest one (not recommended for production usage):**
@@ -25,10 +25,10 @@ Link `azimuth.min.js` in your HTML :
 
 
 ## Usage
-The azimuth function accepts coordinates of two points (latitude1, longitude1, latitude2, longitude2). For example London to New York:
+The azimuth function accepts coordinates of two points ({lat: latitude, lng: longitude}, {lat: latitude, lng: longitude}). For example London to New York:
 
 ```javascript
-azimuth(51.509865, -0.118092, 40.730610, -73.935242)
+azimuth({lat: 51.509865, lng: -0.118092}, {lat: 40.730610, lng: -73.935242})
 ```
 
 The output will look like this:
@@ -36,7 +36,7 @@ The output will look like this:
 {
     distance: 55648932,
     units: "m",
-    bearing: 258,
+    azimuth: 258,
     method: "great-circle",
     direction: "W"
 }
@@ -59,18 +59,18 @@ You can configure the following options:
 - [`units`](#units)
 - [`formula`](#formula)
 - [`distancePrecision`](#distanceprecision)
-- [`bearingPrecision`](#bearingprecision)
+- [`azimuthPrecision`](#azimuthprecision)
 - [`directionPrecision`](#directionprecision)
 
 Here's an example specyfying all available options:
 
 ```javascript
-azimuth(51.509865, -0.118092, 40.730610, -73.935242,  
+azimuth({lat: 51.509865, lng: -0.118092}, {lat: 40.730610, lng: -73.935242},  
   {  
     units: "mi",  
     formula: "great-circle",  
     distancePrecision: 3,  
-    bearingPrecision: 3,  
+    azimuthPrecision: 3,  
     directionPrecision: 2  
   }  
 )
@@ -82,7 +82,7 @@ The output will look like this:
     formula: "great-circle",
     distance: 5564892.653,
     units: "mi",
-    bearing: 258.049,
+    azimuth: 258.049,
     direction: "W"
 }
 ```
@@ -122,7 +122,7 @@ A number indicating number of rounding decimal places (precision) for distance m
 - **Default**: `0`
 
 
-### `bearingPrecision`
+### `azimuthPrecision`
 
 A number indicating number of rounding decimal places (precision) for bearing measure.
 
