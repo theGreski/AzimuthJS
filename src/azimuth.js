@@ -321,7 +321,7 @@ const azimuth = function (pointA, pointB, {units = "m", distancePrecision = 0, f
     output.units = units;
     
     // Add azimuth to the object
-    const azimuth = distance === 0 ? "" : (formula === "rhumb-line" ? calculateAzimuthRhumbLine(pointA.lat, pointA.lng, lat2, lng2) : calculateAzimuthGreatCircle(pointA.lat, pointA.lng, pointB.lat, pointB.lng)).round(azimuthPrecision)
+    const azimuth = distance === 0 ? "" : (formula === "rhumb-line" ? calculateAzimuthRhumbLine(pointA.lat, pointA.lng, pointB.lat, pointB.lng) : calculateAzimuthGreatCircle(pointA.lat, pointA.lng, pointB.lat, pointB.lng)).round(azimuthPrecision)
     output.azimuth = azimuth;
     
     output.formula = formula;
@@ -334,7 +334,5 @@ const azimuth = function (pointA, pointB, {units = "m", distancePrecision = 0, f
     return output; 
 
 }
-
-azimuth({}, 0, 0);
 
 export default azimuth;
