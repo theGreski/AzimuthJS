@@ -16,7 +16,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test:
+  build:
     name: "Build & Test"
     runs-on: ubuntu-latest
     
@@ -24,16 +24,14 @@ jobs:
       - name: "Checkout repository"
         uses: actions/checkout@v3
 
-      - name: "Setup Node.js"
-        uses: actions/setup-node@v4
-        with:
-          node-version: "14"
+      - name: "Install modules"
+        run: yarn
 
       - name: "Install dependencies"
         run: npm install
 
       - name: "Run Jest tests"
-        run: npm test
+        run: yarn test
 #      - name: "npm ci"
 #        run: npm ci
 
