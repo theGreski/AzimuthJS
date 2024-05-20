@@ -5,19 +5,7 @@ on:
   pull_request:
     branches:
       - main
-    # Inputs the workflow accepts.
-#    inputs:
-#      name:
-        # Friendly description to be shown in the UI instead of 'name'
-#        description: 'Person to greet'
-        # Default value if no value is explicitly provided
-#        default: 'World'
-        # Input has to be provided for the workflow to run
-#        required: true
-        # The data type of the input
-#        type: string
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   test:
     name: "Build & Test"
@@ -25,7 +13,7 @@ jobs:
     
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: "Set up Node.js"
         uses: actions/setup-node@v3
@@ -37,6 +25,30 @@ jobs:
 
       - name: "Run Jest tests"
         run: npm test
+
+  deploy:
+    name: Minify JS
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so auto-minify job can access it
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Auto Minify"
+        uses: nizarmah/auto-minify@v3
+        with:
+          directory: 'lib'
+          overwrite: true
+
+      # Auto commits minified files to the repository
+      # Ignore it if you don't want to commit the files to the repository 
+      - name: "Auto committing minified files"
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          repository: 'dist'
+          commit_message: "Github Action: Auto Minified JS files"
+          branch: ${{ github.ref }}
 #      - name: "npm ci"
 #        run: npm ci
 
