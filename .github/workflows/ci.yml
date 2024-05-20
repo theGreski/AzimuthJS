@@ -28,7 +28,7 @@ jobs:
 
   deploy:
     needs: test
-    name: Minify JS
+    name: "Minify JS"
     runs-on: ubuntu-latest
     
     steps:

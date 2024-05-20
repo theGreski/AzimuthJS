@@ -1,7 +1,7 @@
 # AzimuthJS
 ![GitHub](https://img.shields.io/github/license/grekowski/AzimuthJS)  ![GitHub](https://img.shields.io/github/languages/top/grekowski/AzimuthJS)
 
-AzimuthJS is a small, stand-alone script to calculate distance, azimuth and direction between two points (given the latitude/longitude of those points).
+AzimuthJS is a small, stand-alone script/module to calculate distance, azimuth and direction between two points (given the latitude/longitude of those points).
 
 South latitudes are negative, east longitudes are positive.
 
@@ -10,19 +10,23 @@ Link `azimuth.min.js` in your HTML :
 
 **Load exact version:**  Latest version is ![GitHub](https://img.shields.io/github/v/release/grekowski/AzimuthJS?style=plastic&label=)
 ```html
-<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@2.0.0/dist/azimuth.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@2.0.0/lib/azimuth.min.js"></script>
 ```
 
 **Load a version range instead of an exact version:**
 ```html
-<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@2.0/dist/azimuth.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@2.0/lib/azimuth.min.js"></script>
 ```
 
 **Omit the version completely and use "latest" to load the latest one (not recommended for production usage):**
 ```html
-<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@latest/dist/azimuth.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@latest/lib/azimuth.min.js"></script>
 ```
 
+**Load module in JS:**
+```javascript
+const azimuth = require('https://cdn.jsdelivr.net/gh/grekowski/AzimuthJS@latest/lib/azimuth.min.js"></script>
+```
 
 ## Usage
 The azimuth function accepts coordinates of two points ({lat: latitude, lng: longitude}, {lat: latitude, lng: longitude}). For example London to New York:
