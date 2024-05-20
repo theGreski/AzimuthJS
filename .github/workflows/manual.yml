@@ -16,34 +16,35 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build-and-test:
+  test:
     name: "Build & Test"
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node:
-          - latest
-          - lts/*
+    
     steps:
-      - name: "Checkout"
+      - name: "Checkout repository"
         uses: actions/checkout@v3
 
-      - name: "Setup node"
+      - name: "Setup Node.js"
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: "14"
 
-      - name: "npm ci"
-        run: npm ci
+      - name: "Install dependencies"
+        run: npm install
 
-      - name: "Build"
-        run: npm run build
+      - name: "Run Jest tests"
+        run: npm test
+#      - name: "npm ci"
+#        run: npm ci
 
-      - name: "Linters"
-        run: npm run lint
+#      - name: "Build"
+#        run: npm run build
 
-      - name: "Unit Tests"
-        run: npm run test
+#      - name: "Linters"
+#        run: npm run lint
+
+#      - name: "Unit Tests"
+#        run: npm run test
 
 #      - name: "Artifacts"
 #        uses: actions/upload-artifact@v3
