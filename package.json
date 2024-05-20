@@ -1,7 +1,8 @@
 {
     "name": "azimuth",
+    "version": "2.0.0",
     "description": "Get distance, bearing and direction between two GPS coordinates",
-    "main": "lib/azimuth.js",
+    "main": "lib/azimuth.min.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/theGreski/AzimuthJS.git"
