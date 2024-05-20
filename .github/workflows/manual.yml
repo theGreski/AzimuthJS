@@ -27,6 +27,7 @@ jobs:
         run: npm test
 
   deploy:
+    needs: test
     name: Minify JS
     runs-on: ubuntu-latest
     
