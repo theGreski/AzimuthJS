@@ -39,8 +39,8 @@ jobs:
       - name: "Auto Minify"
         uses: nizarmah/auto-minify@v3
         with:
-          directory: 'lib/azimuth.js'
-          output: "lib"
+          directory: 'dist/azimuth.js'
+          output: "dist"
           overwrite: true
 
       # Auto commits minified files to the repository
