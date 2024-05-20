@@ -1,0 +1,29 @@
+{
+    "name": "azimuthjs",
+    "version": "2.0.0",
+    "description": "Get distance, bearing and direction between two GPS coordinates",
+    "main": "lib/azimuth.min.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/theGreski/AzimuthJS.git"
+    },
+    "keywords": [
+        "azimuth",
+        "distance",
+        "direction",
+        "bearing",
+        "gps"
+    ],
+    "author": "Grzegorz Rekowski",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/theGreski/AzimuthJS/issues"
+    },
+    "homepage": "https://github.com/theGreski/AzimuthJS#readme",
+    "devDependencies": {
+        "jest": "^29.7.0"
+    },
+    "scripts": {
+        "test": "jest"
+    }
+}

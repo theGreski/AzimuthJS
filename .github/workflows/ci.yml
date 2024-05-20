@@ -1,0 +1,50 @@
+name: Continuous Integration
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: "Build & Test"
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Set up Node.js"
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14'
+
+      - name: "Install dependencies"
+        run: npm install
+
+      - name: "Run Jest tests"
+        run: npm test
+
+  deploy:
+    needs: test
+    name: "Minify JS"
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so auto-minify job can access it
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Auto Minify"
+        uses: nizarmah/auto-minify@v3
+        with:
+          directory: 'lib/azimuth.js'
+          output: "lib"
+          overwrite: true
+
+      # Auto commits minified files to the repository
+      - name: "Auto committing minified files"
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Github Action: Auto Minified JS files"
