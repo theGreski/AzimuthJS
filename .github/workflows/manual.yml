@@ -48,7 +48,7 @@ jobs:
       - name: "Auto committing minified files"
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          repository: 'lib'
+#          repository: 'lib'
           commit_message: "Github Action: Auto Minified JS files"
 #          branch: ${{ github.ref }}
 #      - name: "npm ci"
