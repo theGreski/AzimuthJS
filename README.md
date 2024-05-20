@@ -25,7 +25,7 @@ Link `azimuth.min.js` in your HTML :
 
 **Load module in JS:**
 ```javascript
-const azimuth = require('https://cdn.jsdelivr.net/gh/theGreski/AzimuthJS@latest/dist/azimuth.min.js"></script>
+const azimuth = require('https://cdn.jsdelivr.net/gh/theGreski/AzimuthJS@latest/dist/azimuth.min.js');
 ```
 
 ## Usage
