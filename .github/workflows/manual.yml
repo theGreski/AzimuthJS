@@ -45,12 +45,12 @@ jobs:
       - name: "Unit Tests"
         run: npm run test
 
-      - name: "Artifacts"
-        uses: actions/upload-artifact@v3
-        with:
-          path: |
-            lib/sepa.js
-            lib/sepa.min.js
+#      - name: "Artifacts"
+#        uses: actions/upload-artifact@v3
+#        with:
+#          path: |
+#            lib/sepa.js
+#            lib/sepa.min.js
             
   # This workflow contains a single job called "greet"
 #  greet:
