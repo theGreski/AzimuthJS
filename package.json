@@ -18,5 +18,11 @@
     "bugs": {
         "url": "https://github.com/theGreski/AzimuthJS/issues"
     },
-    "homepage": "https://github.com/theGreski/AzimuthJS#readme"
+    "homepage": "https://github.com/theGreski/AzimuthJS#readme",
+    "devDependencies": {
+        "jest": "^29.7.0"
+    },
+    "scripts": {
+        "test": "jest"
+    }
 }
