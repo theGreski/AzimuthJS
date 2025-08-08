@@ -29,7 +29,6 @@
     },
     "scripts": {
         "test": "jest",
-        "build": "microbundle --no-sourcemap --no-compress --format esm,umd",
-        "dev": "microbundle watch"
+        "build": "microbundle -i src/azimuth.js --no-sourcemap --no-pkg-main --no-compress -f umd -o dist/azimuth.js"
     }
 }
