@@ -10,11 +10,11 @@ describe('Validation testing', () => {
     });
 
     test('Validate Latitude', () => {
-        expect(() => azimuth({ lat: 190, lng: 0 },NEW_YORK)).toThrow(Error);
+        expect(() => azimuth({ lat: 100, lng: 0 },NEW_YORK)).toThrow(Error);
     });
 
     test('Validate Longitude', () => {
-        expect(() => azimuth({ lat: 0, lng: 100 },NEW_YORK)).toThrow(Error);
+        expect(() => azimuth({ lat: 0, lng: 190 },NEW_YORK)).toThrow(Error);
     });
 
     test('Validate Units', () => {
