@@ -4,8 +4,15 @@
     "description": "Get distance, bearing and direction between two GPS coordinates",
     "source": "src/azimuth.js",
     "main": "dist/azimuth.js",
+    "exports": {
+        "default": "dist/azimuth.new.esm.js"
+    },
     "module": "dist/azimuth.esm.js",
     "unpkg": "dist/azimuth.min.js",
+    "publishConfig": {
+        "source": "src/azimuth.js",
+        "main": "dist/azimuth.js"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/theGreski/AzimuthJS.git"
@@ -29,6 +36,6 @@
     },
     "scripts": {
         "test": "jest",
-        "build": "microbundle -i src/azimuth.js --no-sourcemap --no-pkg-main --no-compress -f umd -o dist/azimuth.js"
+        "build": "microbundle -i src/azimuth.js --no-sourcemap --no-pkg-main --no-compress -f iife -o dist/azimuth.js"
     }
 }
