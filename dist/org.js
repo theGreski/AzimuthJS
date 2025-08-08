@@ -268,20 +268,32 @@
          * @throws {Error} If parameters are invalid.
          */
         return function(start, end, {units = "m", distancePrecision = 0, formula = "great-circle", bearingPrecision = 0, directionPrecision = 2} = {}) {
-            // Validate parameters
-            [start.lat, start.lng, end.lat, end.lng, distancePrecision, bearingPrecision, directionPrecision].forEach((v, i) => {
-                if (typeof v !== "number" || isNaN(v)) {
-                    throw new Error(`Parameter ${["Latitude","Longitude","Latitude","Longitude","Distance Precision","Bearing Precision","Direction Precision"][i]} is not a valid number.`);
-                }
-            });
-            
-            // Validate coordinates
+            // Validate 'start' and 'end' parameters
+            if (typeof start !== 'object' || start === null || typeof start.lat !== 'number' || typeof start.lng !== 'number') {
+                throw new Error("First parameter must be an object with numeric 'lat' and 'lng' properties.");
+            }
+            if (typeof end !== 'object' || end === null || typeof end.lat !== 'number' || typeof end.lng !== 'number') {
+                throw new Error("Second parameter must be an object with numeric 'lat' and 'lng' properties.");
+            }
+
+            // Validate coordinate ranges
             if (Math.abs(start.lat) > 90 || Math.abs(end.lat) > 90) {
                 throw new Error('Latitude must be between -90 and 90 degrees.');
             }
             if (Math.abs(start.lng) > 180 || Math.abs(end.lng) > 180) {
                 throw new Error('Longitude must be between -180 and 180 degrees.');
             }
+
+            // Validate numeric options
+            [
+                [distancePrecision, 'distancePrecision'],
+                [bearingPrecision, 'bearingPrecision'],
+                [directionPrecision, 'directionPrecision']
+            ].forEach(([v, name]) => {
+                if (typeof v !== "number" || isNaN(v)) {
+                    throw new Error(`Parameter '${name}' must be a valid number.`);
+                }
+            });
 
             // Validate precisions rounding
             if (![distancePrecision, bearingPrecision].every(p => Number.isInteger(p) && p >= 0 && p <= 15)) {
