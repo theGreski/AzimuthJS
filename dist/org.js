@@ -17,7 +17,7 @@
          */
 
         /**
-         * @typedef {Object} GeolocationCoordinates
+         * @typedef {Object} LatLng
          * @property {number} lat Latitude of the point (degrees).
          * @property {number} lng Longitude of the point (degrees).
          */
@@ -256,8 +256,8 @@
          * 
          * A ‘Rhumb-Line’ (or loxodrome) is a path of constant bearing but are generally longer than great-circle (sometimes up to 30%)
          * 
-         * @param {GeolocationCoordinates} start Coordinates of the first point (degrees).
-         * @param {GeolocationCoordinates} end Coordinates of the second point (degrees).
+         * @param {LatLng} start Coordinates of the first point (degrees).
+         * @param {LatLng} end Coordinates of the second point (degrees).
          * @param {Object} [options] Optional parameters.
          * @param {Units} [options.units="m"] Units of the distance.
          * @param {number} [options.distancePrecision=0] Decimal places for distance (0-15). 

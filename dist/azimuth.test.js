@@ -45,7 +45,7 @@ describe('Results testing', () => {
             formula: "great-circle",
             distance: 5564893,
             units: "m",
-            azimuth: 288,
+            bearing: 288,
             direction: "W"
         });
     });
@@ -55,7 +55,7 @@ describe('Results testing', () => {
             formula: "great-circle",
             distance: 6085767,
             units: "yd",
-            azimuth: 288,
+            bearing: 288,
             direction: "W"
         });
     });
@@ -65,7 +65,7 @@ describe('Results testing', () => {
             formula: "rhumb-line",
             distance: 5788236,
             units: "m",
-            azimuth: 258,
+            bearing: 258,
             direction: "W"
         });
     });
@@ -75,7 +75,7 @@ describe('Results testing', () => {
             formula: "great-circle",
             distance: 5564892.6529,
             units: "m",
-            azimuth: 288,
+            bearing: 288,
             direction: "W"
         });
     });
@@ -85,7 +85,7 @@ describe('Results testing', () => {
             formula: "great-circle",
             distance: 5564893,
             units: "m",
-            azimuth: 288.3081,
+            bearing: 288.3081,
             direction: "W"
         });
     });
@@ -95,7 +95,7 @@ describe('Results testing', () => {
             formula: "great-circle",
             distance: 5564893,
             units: "m",
-            azimuth: 288,
+            bearing: 288,
             direction: "WNW"
         });
     });
@@ -105,7 +105,7 @@ describe('Results testing', () => {
             formula: "great-circle",
             distance: 5564893,
             units: "m",
-            azimuth: 288
+            bearing: 288
         });
     });
     
