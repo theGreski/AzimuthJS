@@ -21,7 +21,7 @@ jobs:
           node-version: '14'
 
       - name: "Install dependencies"
-        run: npm install --save-dev jest
+        run: npm install
 
       - name: "Run Jest tests"
         run: npm test
@@ -48,3 +48,19 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Github Action: Auto Minified JS files"
+  
+  convert:
+    name: "Converting to ESM"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Install Moduloze"
+        run: npm install -g moduloze
+      
+      - name: "Convert to ESM with Moduloze"
+        run: moduloze dist/azimuth.js --output dist/azimuth.esm.js
+
+      - name: "Auto committing converted file"
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Github Action: Converted file to ESM"
