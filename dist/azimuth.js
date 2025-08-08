@@ -1,1 +1,341 @@
-(function(a,b){"object"==typeof exports&&"undefined"!=typeof module?module.exports=b():"function"==typeof define&&define.amd?define(b):(a=a||self,a.azimuth=b())})(this,function(){function s(a){return a*(h/180)}function C(a){return a*(180/h)}function k(i,f,a,b){if(i===a&&f===b)return 0;const c=s(i),d=s(a);let e=s(b-f);const k=D(g(h/4+d/2)/g(h/4+c/2));B(e)>h&&(0<e?e=-(2*h-e):e=2*h+e);const l=A(e,k),m=(C(l)+360)%360;return m}function l(d,e,a,b){if(d===a&&e===b)return 0;const c=s(d),f=s(a),g=s(b-e),h=z(g)*r(f),i=r(c)*z(f)-z(c)*r(f)*r(g),j=A(h,i),k=(C(j)+360)%360;return k}function m(e,c){if(isNaN(e)||isNaN(c))throw new Error("Parameter is not a number!");if(0>e||360<e)throw new Error("Parameter outside of range!");if(1>c||3<c)throw new Error("Parameter outside of range!");const a=["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];let b=4;2==c&&(b=8),3==c&&(b=16);const h=360/b,i=a.length/b;let f=y(e/h)*i;return f>=a.length&&(f=0),a[f]}function n(a,b,c,d){if(a===c&&b===d)return 0;const e=s(a),f=s(c),g=s(a-c),h=s(b-d),i=z(g/2)*z(g/2)+r(e)*r(f)*z(h/2)*z(h/2),j=2*A(x(i),x(1-i));return E*j}function o(b,d,a,c){if(b===a&&d===c)return 0;const e=s(b),f=s(a),i=s(b-a);let j=s(d-c);const k=D(g(h/4+f/2)/g(h/4+e/2)),m=1e-11<B(k)?i/k:r(e);B(j)>h&&(0<j?j=-(2*h-j):j=2*h+j);const n=x(i*i+m*m*j*j)*E;return n}function p(b,c="m"){if("m"===c)return b;switch(c){case"km":return .001*b;break;case"ft":return 3.28084*b;break;case"yd":return 1.0936*b;break;case"mi":return 621371e-9*b;break;case"nm":return 539957e-9*b;break;default:return b}}var c=Number.prototype,a=Math.PI,e=Math.tan,f=Math.log,j=Math.abs,q=Math.atan2,t=Math.sin,u=Math.cos,v=Math.round,w=Math.sqrt,x=w,y=v,r=u,z=t,A=q,B=j,D=f,g=e,h=a;const E=6371009;return c.round=function(b=0){const c=new Number(this.valueOf());return+(y(c+"e+"+b)+"e-"+b)},function(q,g,{units:a="m",distancePrecision:b=0,formula:c="great-circle",azimuthPrecision:d=0,directionPrecision:e=2}={}){if("undefined"==typeof q||"undefined"==typeof g)throw new Error("At least one point is missing!");if([q,g].forEach(a=>{if(!a.hasOwnProperty("lat")||!a.hasOwnProperty("lng"))throw new Error("Latitude/Longitude property missing!");if(isNaN(a.lat)||isNaN(a.lng))throw new Error("Latitude/Longitude property must be a number!");if(180<B(a.lat)||90<B(a.lng))throw new Error("Latitude/Longitude property exceeding maximal value!")}),!["m","km","ft","yd","mi","nm"].includes(a))throw new Error("Units parameter type not supported!");if(isNaN(b)||isNaN(d)||15<b||15<d)throw new Error("Precision parameter is not a number or exceeds it's maximum value of 15!");if(!["great-circle","rhumb-line"].includes(c))throw new Error("Calculation formula type parameter not supported!");if(![0,1,2,3,"0","1","2","3"].includes(e))throw new Error("Compass precision parameter not supported!");let f={};const h=p("rhumb-line"===c?o(q.lat,q.lng,g.lat,g.lng):n(q.lat,q.lng,g.lat,g.lng),a).round(b);f.distance=h,f.units=a;const i=0===h?"":("rhumb-line"===c?k(q.lat,q.lng,g.lat,g.lng):l(q.lat,q.lng,g.lat,g.lng)).round(d);return f.azimuth=i,f.formula=c,0!=e&&(f.direction=0===h?"":m(i,e)),f}});
+(function(global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? 
+    module.exports = factory() : 
+    typeof define === 'function' && define.amd ? 
+    define(factory) :
+    (global = global || self, global.azimuth = factory());
+})(
+    this, (function(){
+        
+        /**
+         * @typedef {Object} 	Azimuth
+         * @property {number} distance Distance between the two points, in the specified units.
+         * @property {string} units Units of the distance ("m", "km", "ft", "yd", "mi", "nm").
+         * @property {number|string} bearing Initial bearing from point 1 to point 2 (degrees, or empty string if distance is 0).
+         * @property {string} formula Calculation formula used ("great-circle" or "rhumb-line").
+         * @property {string} [direction] Compass direction from point 1 to point 2 (present if directionPrecision !== 0).
+         */
+
+        /**
+         * @typedef {"m" | "km" | "ft" | "yd" | "mi" | "nm"} Units
+         * Units of distance: meters, kilometers, feet, yards, miles, nautical miles.
+         */
+
+        /**
+         * @typedef {"great-circle" | "rhumb-line"} Formula
+         * Calculation formula: 'great-circle' for shortest path, 'rhumb-line' for constant bearing.
+         */
+        
+        /**
+         * Mean radius of earth in meters used for calculations.
+         * 
+         * A globally-average value is usually considered to be 6,371 kilometres (3,959 mi) with a 0.3% variability
+         * 
+         * @type {Number}
+         * @const
+         */
+        const R = 6371009;
+
+        /**
+         * Converts decimal degrees to radians.
+         * @param {number} n Angle in degrees.
+         * @returns {number} Angle in radians.
+         * @throws {Error} If input is not a number.
+         */
+        function deg2rad(n) { 
+            if (typeof n !== "number" || isNaN(n)) {
+                throw new Error("Input to deg2rad must be a valid number.");
+            }
+            return n * (Math.PI / 180);
+        }
+
+        /**
+         * Converts radians to degrees.
+         * @param {number} n Angle in radians.
+         * @returns Angle in degrees.
+         * @throws {Error} If input is not a number.
+         */
+        function rad2deg(n) {
+            if (typeof n !== "number" || isNaN(n)) {
+                throw new Error("Input to rad2deg must be a valid number.");
+            }
+            return n * (180 / Math.PI);
+        }
+
+        /**
+         * Rounds a number to a specific number of decimal places.
+         * @param {number} number The number to round.
+         * @param {number} precision  Number of decimal places.
+         * @returns {number} The rounded number.
+         */
+        function round(number, precision = 0) {
+            return Number(Math.round(Number(number) + "e+" + precision) + "e-" + precision);
+        };
+
+        /**
+         * Get bearing using Rhumb-Line formula
+         * @returns {number} Bearing in degrees.
+         */
+        function getBearingRhumbLine(lat1, lng1, lat2, lng2) {
+            
+            // if coordinates are the same, distance is zero (skip calculations)
+            if (lat1 === lat2 && lng1 === lng2) return 0;
+
+            const rLat1 = deg2rad(lat1);
+            const rLat2 = deg2rad(lat2);
+            let dLong = deg2rad(lng2 - lng1);
+                        
+            const dPhi = Math.log( Math.tan( Math.PI / 4 + rLat2  / 2) / Math.tan(Math.PI / 4 + rLat1 / 2));
+            
+            // Correct for anti-meridian crossing
+            if (Math.abs(dLong) > Math.PI) {
+                dLong = dLong > 0
+                    ? -(2 * Math.PI - dLong)
+                    : (2 * Math.PI + dLong);
+            }
+            const radians = Math.atan2(dLong, dPhi);
+            const brng = (rad2deg(radians) + 360) % 360; // in degrees
+
+            return brng;
+        }
+
+        /**
+         * Get bearing using Great-Circle formula
+         * @returns {number} Bearing in degrees.
+         */
+        function getBearingGreatCircle(lat1, lng1, lat2, lng2) {
+
+            const rLat1 = deg2rad(lat1);
+            const rLat2 = deg2rad(lat2);
+            const dLong = deg2rad(lng2 - lng1);
+
+            const y = Math.sin(dLong) * Math.cos(rLat2);
+            const x = Math.cos(rLat1) * Math.sin(rLat2) -
+                    Math.sin(rLat1) * Math.cos(rLat2) * Math.cos(dLong);
+            const radians = Math.atan2(y, x);
+            const brng = (rad2deg(radians) + 360) % 360; // in degrees
+
+            return brng;
+        }
+
+        /**
+         * Convert bearing degrees to compass direction.
+         * @param {number} degrees Bearing in degrees.
+         * @param {number} precision Precision level (1=cardinal, 2=intercardinal, 3=secondary intercardinal).
+         * @returns {string} Compass direction.
+         * @throws {Error} If parameters are invalid.
+         */
+        function getCompassDirection(degrees, precision) {
+            
+            if (typeof degrees !== "number" || isNaN(degrees)) {
+                throw new Error('Degrees parameter is not a valid number!');
+            }
+            if (typeof precision !== "number" || isNaN(precision)) {
+                throw new Error('Precision parameter is not a valid number!');
+            }
+            if (degrees < 0 || degrees > 360) {
+                throw new Error('Degrees parameter outside of range (0-360)!');
+            }
+            if (precision < 1 || precision > 3) {
+                throw new Error('Precision parameter outside of range (1-3)!');
+            }
+
+            // Normalize 360 to 0
+            if (degrees === 360) degrees = 0;
+
+            const directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+            
+            // Default precision number of directions
+            let maxDirections = 4;
+            if (precision === 2) maxDirections = 8;
+            if (precision === 3) maxDirections = 16;
+            
+            const unitAngle = 360 / maxDirections;
+            const indexMultiplier = directions.length / maxDirections;
+            let directionIndex = Math.round(degrees / unitAngle) * indexMultiplier;
+            
+            // If over the last direction, display first
+            if (directionIndex >= directions.length) directionIndex = 0;
+
+            return directions[directionIndex];
+        }
+
+        /**
+         * Haversine formula to calculate the great-circle distance between two points
+         * @returns {number} Distance in meters.
+         */
+        function getDistanceGreatCircle(lat1, lng1, lat2, lng2) {
+
+            // if coordinates are the same, distance is zero (skip calculations)
+            if (lat1 === lat2 && lng1 === lng2) return 0;
+
+            const rLat1	= deg2rad(lat1);
+            const rLat2	= deg2rad(lat2);
+            const dLat  = deg2rad(lat2 - lat1);
+            const dLong = deg2rad(lng2 - lng1);
+
+            const a = 
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(rLat1) * Math.cos(rLat2) * 
+                Math.sin(dLong / 2) * Math.sin(dLong / 2);
+            
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            return R * c;
+        }
+
+        /**
+         * Inverse Gudermannian formula to calculate the rhumb line distance between two points
+         * @returns {number} Distance in meters.
+         */
+        function getDistanceRhumbLine(lat1, lng1, lat2, lng2) {
+
+            // if coordinates are the same, distance is zero (skip calculations)
+            if (lat1 === lat2 && lng1 === lng2) return 0;
+
+            const rLat1	= deg2rad(lat1);
+            const rLat2	= deg2rad(lat2);
+            const dLat  = deg2rad(lat2 - lat1);
+            const dLong = deg2rad(lng2 - lng1);
+
+            const dPhi = Math.log(Math.tan(Math.PI / 4 + rLat2 / 2) / Math.tan(Math.PI / 4 + rLat1 / 2));
+            const q = Math.abs(dPhi) > 10e-12 ? dLat / dPhi : Math.cos(rLat1); // E-W course becomes ill-conditioned with 0/0
+
+            // if dLong over 180° take shorter rhumb line across the anti-meridian:
+            if (Math.abs(dLong) > Math.PI) {
+                dLong = dLong > 0
+                    ? -(2 * Math.PI - dLong)
+                    : (2 * Math.PI + dLong);
+            }
+
+            const dist = Math.sqrt(dLat * dLat + q * q * dLong * dLong) * R;
+
+            return dist;
+        }
+
+        /**
+         * Convert length/distance from meters to specified units
+         * @param {number} distance Distance in meters.
+         * @param {Units} [units="m"] Target units.
+         * @returns {number} Converted distance.
+         */
+        function metersConverter(distance, units="m") {
+            
+            if (units === "m") return distance;
+
+            switch(units) {
+                case "km": return distance * 0.001;
+                case "ft": return distance * 3.28084;
+                case "yd": return distance * 1.0936;
+                case "mi": return distance * 0.000621371;
+                case "nm": return distance * 0.000539957;
+                default: return distance;
+            }
+            
+        }
+
+        /**
+         * Calculate the distance, bearing and direction between two coordinates.
+         * 
+         * Distance and bearing can use "great-circle" or "rhumb-line" formulas.
+         * Great-Circle calculations use a spherical earth model (ignoring ellipsoidal effects) *which is accurate enough* for most purposes… 
+         * In fact, the earth is very slightly ellipsoidal; using a spherical model gives errors typically up to ~0.3%.
+         * 
+         * Great Circle distance uses the ‘haversine’ formula to calculate distance between two points (also known as the ‘crow-line’) 
+         * - that is, the shortest distance over the earth’s surface.
+         * 
+         * 
+         * With 'great-circle' your current heading will vary as you follow a great circle path (orthodrome); 
+         * The final heading will differ from the initial heading. This will provide initial heading.
+         * 
+         * A ‘Rhumb-Line’ (or loxodrome) is a path of constant bearing but are generally longer than great-circle (sometimes up to 30%)
+         * 
+         * @param {number} lat1 Latitude of the first point (degrees).
+         * @param {number} lng1 Longitude of the first point (degrees).
+         * @param {number} lat2 Latitude of the second point (degrees).
+         * @param {number} lng2 Longitude of the second point (degrees).
+         * @param {Object} [options] Optional parameters.
+         * @param {Units} [options.units="m"] Units of the distance.
+         * @param {number} [options.distancePrecision=0] Decimal places for distance (0-15). 
+         * @param {Formula} [options.formula="great-circle"] Calculation formula ("great-circle" or "rhumb-line").
+         * @param {number} [options.bearingPrecision=0] Decimal places for bearing (0-15).
+         * @param {number} [options.directionPrecision=2] Direction precision (0 disables, 1=cardinal, 2=intercardinal, 3=secondary intercardinal).
+         * @returns {Azimuth} Result object.
+         * @throws {Error} If parameters are invalid.
+         */
+        return function(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, formula = "great-circle", bearingPrecision = 0, directionPrecision = 2} = {}) {
+            // Validate parameters
+            [lat1, lng1, lat2, lng2, distancePrecision, bearingPrecision, directionPrecision].forEach((v, i) => {
+                if (typeof v !== "number" || isNaN(v)) {
+                    throw new Error(`Parameter ${["Latitude","Longitude","Latitude","Longitude","Distance Precision","Bearing Precision","Direction Precision"][i]} is not a valid number.`);
+                }
+            });
+            
+            // Validate coordinates
+            if (Math.abs(lat1) > 90 || Math.abs(lat2) > 90) {
+                throw new Error('Latitude must be between -90 and 90 degrees.');
+            }
+            if (Math.abs(lng1) > 180 || Math.abs(lng2) > 180) {
+                throw new Error('Longitude must be between -180 and 180 degrees.');
+            }
+
+            // Validate precisions rounding
+            if (![distancePrecision, bearingPrecision].every(p => Number.isInteger(p) && p >= 0 && p <= 15)) {
+                throw new Error('Precision parameters must be integers between 0 and 15.');
+            }
+
+            // Validate output distance units
+            if (!["m", "km", "ft", "yd", "mi", "nm"].includes(units)) {
+                throw new Error('Units parameter type not supported!');
+            }
+
+            // Validate calculation formula type
+            if (!["great-circle", "rhumb-line"].includes(formula)) {
+                throw new Error('Calculation formula type parameter not supported!');
+            }
+
+            // Validate directionPrecision
+            if (!Number.isInteger(directionPrecision) || directionPrecision < 0 || directionPrecision > 3) {
+                throw new Error('Direction precision must be an integer between 0 and 3.');
+            }
+
+            // Create output object
+            const output = {};
+
+            // Add distance to the object
+            const distance = round(
+                metersConverter(
+                    formula === "rhumb-line" 
+                        ? getDistanceRhumbLine(lat1, lng1, lat2, lng2) 
+                        : getDistanceGreatCircle(lat1, lng1, lat2, lng2), 
+                    units
+                ), 
+                distancePrecision
+            );
+            output.distance = distance;
+
+            // Add units of measure to the object
+            output.units = units;
+            
+            // Add bearing to the object
+            const bearing = distance === 0 
+                ? "" 
+                : round(
+                    formula === "rhumb-line" 
+                        ? getBearingRhumbLine(lat1, lng1, lat2, lng2) 
+                        : getBearingGreatCircle(lat1, lng1, lat2, lng2), 
+                    bearingPrecision
+                );
+            output.bearing = bearing;
+            
+            output.formula = formula;
+
+            // Add compass direction to the object
+            if (directionPrecision !== 0) {
+                output.direction = distance === 0 ? "" : getCompassDirection(bearing, directionPrecision);
+            }
+
+            return output;
+        }
+    })
+);
