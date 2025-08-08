@@ -21,12 +21,16 @@ describe('Validation testing', () => {
         expect(() => azimuth(LONDON, NEW_YORK, { units: "car" })).toThrow(Error);
     });
 
-    test('Validate invalid Distance/Azimuth Precision Rounding', () => {
+    test('Validate invalid Distance Precision Rounding', () => {
         expect(() => azimuth(LONDON, NEW_YORK, { distancePrecision: "car" })).toThrow(Error);
     });
 
-    test('Validate exceeding Distance/Azimuth Precision Rounding', () => {
+    test('Validate exceeding Distance Precision Rounding', () => {
         expect(() => azimuth(LONDON, NEW_YORK, { distancePrecision: 50 })).toThrow(Error);
+    });
+
+    test('Validate exceeding Bearing Precision Rounding', () => {
+        expect(() => azimuth(LONDON, NEW_YORK, { bearingPrecision: 50 })).toThrow(Error);
     });
 
     test('Validate invalid Compass Precision', () => {
