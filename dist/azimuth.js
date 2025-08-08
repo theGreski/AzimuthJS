@@ -1,8 +1,5 @@
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.azimuthjs = factory());
-})(this, (function () {
+var azimuthjs = (function () {
+
   function _readOnlyError(r) {
     throw new TypeError('"' + r + '" is read-only');
   }
@@ -332,4 +329,4 @@
 
   return azimuth;
 
-}));
+})();
