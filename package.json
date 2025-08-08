@@ -29,6 +29,6 @@
     },
     "scripts": {
         "test": "jest",
-        "build": "microbundle -i src/azimuth.js --no-sourcemap --no-pkg-main --no-compress -f iife -o dist/azimuth.js"
+        "build": "microbundle -i src/azimuth.js --no-sourcemap --no-pkg-main --no-compress --name azimuth -f iife -o dist/azimuth.js"
     }
 }
