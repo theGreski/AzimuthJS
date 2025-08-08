@@ -1,4 +1,4 @@
-var azimuthjs = (function () {
+var azimuth = (function () {
 
   function _readOnlyError(r) {
     throw new TypeError('"' + r + '" is read-only');
