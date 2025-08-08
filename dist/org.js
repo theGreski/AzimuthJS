@@ -8,12 +8,18 @@
     this, (function(){
         
         /**
-         * @typedef {Object} 	Azimuth
+         * @typedef {Object} Azimuth
          * @property {number} distance Distance between the two points, in the specified units.
          * @property {string} units Units of the distance ("m", "km", "ft", "yd", "mi", "nm").
          * @property {number|string} bearing Initial bearing from point 1 to point 2 (degrees, or empty string if distance is 0).
          * @property {string} formula Calculation formula used ("great-circle" or "rhumb-line").
          * @property {string} [direction] Compass direction from point 1 to point 2 (present if directionPrecision !== 0).
+         */
+
+        /**
+         * @typedef {Object} GeolocationCoordinates
+         * @property {number} lat Latitude of the point (degrees).
+         * @property {number} lng Longitude of the point (degrees).
          */
 
         /**
@@ -250,10 +256,8 @@
          * 
          * A ‘Rhumb-Line’ (or loxodrome) is a path of constant bearing but are generally longer than great-circle (sometimes up to 30%)
          * 
-         * @param {number} lat1 Latitude of the first point (degrees).
-         * @param {number} lng1 Longitude of the first point (degrees).
-         * @param {number} lat2 Latitude of the second point (degrees).
-         * @param {number} lng2 Longitude of the second point (degrees).
+         * @param {GeolocationCoordinates} start Coordinates of the first point (degrees).
+         * @param {GeolocationCoordinates} end Coordinates of the second point (degrees).
          * @param {Object} [options] Optional parameters.
          * @param {Units} [options.units="m"] Units of the distance.
          * @param {number} [options.distancePrecision=0] Decimal places for distance (0-15). 
@@ -263,19 +267,19 @@
          * @returns {Azimuth} Result object.
          * @throws {Error} If parameters are invalid.
          */
-        return function(lat1, lng1, lat2, lng2, {units = "m", distancePrecision = 0, formula = "great-circle", bearingPrecision = 0, directionPrecision = 2} = {}) {
+        return function(start, end, {units = "m", distancePrecision = 0, formula = "great-circle", bearingPrecision = 0, directionPrecision = 2} = {}) {
             // Validate parameters
-            [lat1, lng1, lat2, lng2, distancePrecision, bearingPrecision, directionPrecision].forEach((v, i) => {
+            [start.lat, start.lng, end.lat, end.lng, distancePrecision, bearingPrecision, directionPrecision].forEach((v, i) => {
                 if (typeof v !== "number" || isNaN(v)) {
                     throw new Error(`Parameter ${["Latitude","Longitude","Latitude","Longitude","Distance Precision","Bearing Precision","Direction Precision"][i]} is not a valid number.`);
                 }
             });
             
             // Validate coordinates
-            if (Math.abs(lat1) > 90 || Math.abs(lat2) > 90) {
+            if (Math.abs(start.lat) > 90 || Math.abs(end.lat) > 90) {
                 throw new Error('Latitude must be between -90 and 90 degrees.');
             }
-            if (Math.abs(lng1) > 180 || Math.abs(lng2) > 180) {
+            if (Math.abs(start.lng) > 180 || Math.abs(end.lng) > 180) {
                 throw new Error('Longitude must be between -180 and 180 degrees.');
             }
 
@@ -306,8 +310,8 @@
             const distance = round(
                 metersConverter(
                     formula === "rhumb-line" 
-                        ? getDistanceRhumbLine(lat1, lng1, lat2, lng2) 
-                        : getDistanceGreatCircle(lat1, lng1, lat2, lng2), 
+                        ? getDistanceRhumbLine(start.lat, start.lng, end.lat, end.lng) 
+                        : getDistanceGreatCircle(start.lat, start.lng, end.lat, end.lng), 
                     units
                 ), 
                 distancePrecision
@@ -322,8 +326,8 @@
                 ? "" 
                 : round(
                     formula === "rhumb-line" 
-                        ? getBearingRhumbLine(lat1, lng1, lat2, lng2) 
-                        : getBearingGreatCircle(lat1, lng1, lat2, lng2), 
+                        ? getBearingRhumbLine(start.lat, start.lng, end.lat, end.lng) 
+                        : getBearingGreatCircle(start.lat, start.lng, end.lat, end.lng), 
                     bearingPrecision
                 );
             output.bearing = bearing;

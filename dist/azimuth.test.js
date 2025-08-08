@@ -6,7 +6,7 @@ const NEW_YORK = {lat: 40.730610, lng: -73.935242};
 describe('Validation testing', () => {
     
     test('Validate Point', () => {
-        expect(() => azimuth({})).toThrow('At least one point is missing!');
+        expect(() => azimuth({})).toThrow('Parameter Latitude is not a valid number.');
     });
 
     test('Validate Latitude', () => {
