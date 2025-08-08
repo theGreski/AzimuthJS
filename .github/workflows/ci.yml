@@ -41,7 +41,7 @@ jobs:
         with:
           directory: 'dist/azimuth.js'
           output: "dist"
-          overwrite: true
+          overwrite: false
 
       # Auto commits minified files to the repository
       - name: "Auto committing minified files"
