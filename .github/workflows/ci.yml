@@ -39,7 +39,7 @@ jobs:
       - name: "Auto Minify"
         uses: nizarmah/auto-minify@v3
         with:
-          directory: 'dist/azimuth.js'
+          directory: "dist/azimuth.js"
           output: "dist"
           overwrite: false
 
@@ -50,10 +50,14 @@ jobs:
           commit_message: "Github Action: Auto Minified JS files"
   
   convert:
+    needs: deploy
     name: "Converting to ESM"
     runs-on: ubuntu-latest
 
     steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+        
       - name: "Install Moduloze"
         run: npm install -g moduloze
       
