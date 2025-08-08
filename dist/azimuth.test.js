@@ -6,7 +6,7 @@ const NEW_YORK = {lat: 40.730610, lng: -73.935242};
 describe('Validation testing', () => {
     
     test('Validate Point', () => {
-        expect(() => azimuth({})).toThrow('Parameter Latitude is not a valid number.');
+        expect(() => azimuth({})).toThrow(`First parameter must be an object with numeric 'lat' and 'lng' properties.`);
     });
 
     test('Validate Latitude', () => {
@@ -80,8 +80,8 @@ describe('Results testing', () => {
         });
     });
 
-    test('Validate Azimuth Precision', () => {
-        expect(azimuth(LONDON, NEW_YORK, {"azimuthPrecision":4})).toEqual({
+    test('Validate Bearing Precision', () => {
+        expect(azimuth(LONDON, NEW_YORK, {"bearingPrecision":4})).toEqual({
             formula: "great-circle",
             distance: 5564893,
             units: "m",
@@ -90,7 +90,7 @@ describe('Results testing', () => {
         });
     });
     
-    test('Validate Azimuth Precision', () => {
+    test('Validate Compass Precision 1', () => {
         expect(azimuth(LONDON, NEW_YORK, {"directionPrecision":3})).toEqual({
             formula: "great-circle",
             distance: 5564893,
@@ -100,7 +100,7 @@ describe('Results testing', () => {
         });
     });
 
-    test('Validate No Azimuth Precision', () => {
+    test('Validate No Compass Precision 2', () => {
         expect(azimuth(LONDON, NEW_YORK, {"directionPrecision":0})).toEqual({
             formula: "great-circle",
             distance: 5564893,
