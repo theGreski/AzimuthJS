@@ -48,28 +48,3 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Github Action: Auto Minified JS files"
-  
-  convert:
-    needs: deploy
-    name: "Converting to ESM"
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@v4
-
-      - name: "Set up Node.js"
-        uses: actions/setup-node@v4
-        with:
-          node-version: '14'
-
-      - name: "Install dependencies"
-        run: npm install
-
-      - name: "Run Microbundle"
-        run: npm run build
-
-      - name: "Auto committing converted file"
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Github Action: Converted file to ESM"

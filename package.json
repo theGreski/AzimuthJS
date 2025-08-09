@@ -24,11 +24,9 @@
     },
     "homepage": "https://github.com/theGreski/AzimuthJS#readme",
     "devDependencies": {
-        "jest": "^29.7.0",
-        "microbundle": "^0.15.1"
+        "jest": "^29.7.0"
     },
     "scripts": {
-        "test": "jest",
-        "build": "microbundle -i src/azimuth.js --no-sourcemap --no-pkg-main --no-compress --name azimuth -f iife -o dist/azimuth.js"
+        "test": "jest"
     }
 }
