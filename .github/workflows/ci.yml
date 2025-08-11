@@ -27,7 +27,7 @@ jobs:
         run: npm run test
 
   deploy:
-    needs: test
+    needs: unit-test
     name: "Minify JS"
     runs-on: ubuntu-latest
     
