@@ -1,4 +1,4 @@
-const azimuth = require('./src/azimuth.js');
+const azimuth = require('src/azimuth.js');
 
 const LONDON = {lat: 51.509865, lng: -0.118092};
 const NEW_YORK = {lat: 40.730610, lng: -73.935242};
