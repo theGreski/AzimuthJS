@@ -267,7 +267,7 @@
          * @returns {Azimuth} Result object.
          * @throws {Error} If parameters are invalid.
          */
-        return function(start, end, {units = "m", distancePrecision = 0, formula = "great-circle", bearingPrecision = 0, directionPrecision = 2} = {}) {
+        const azimuth = function(start, end, {units = "m", distancePrecision = 0, formula = "great-circle", bearingPrecision = 0, directionPrecision = 2} = {}) {
             // Validate 'start' and 'end' parameters
             if (typeof start !== 'object' || start === null || typeof start.lat !== 'number' || typeof start.lng !== 'number') {
                 throw new Error("First parameter must be an object with numeric 'lat' and 'lng' properties.");
@@ -353,5 +353,7 @@
 
             return output;
         }
+
+        return azimuth;
     })
 );
