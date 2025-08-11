@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
-      - main
+      - [ main ]
 
 jobs:
-  test:
-    name: "Build & Test"
+  unit-test:
+    name: "Run Tests"
     runs-on: ubuntu-latest
     
     steps:
@@ -18,13 +18,13 @@ jobs:
       - name: "Set up Node.js"
         uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: "14"
 
       - name: "Install dependencies"
-        run: npm install
+        run: npm install --save-dev
 
       - name: "Run Jest tests"
-        run: npm test
+        run: npm run test
 
   deploy:
     needs: test
@@ -39,12 +39,12 @@ jobs:
       - name: "Auto Minify"
         uses: nizarmah/auto-minify@v3
         with:
-          directory: "dist/azimuth.js"
+          directory: "src"
           output: "dist"
           overwrite: false
 
       # Auto commits minified files to the repository
-      - name: "Auto committing minified files"
+      - name: "Auto commit minified files"
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Github Action: Auto Minified JS files"
+          commit_message: "Github Action: Auto add minified js files"
