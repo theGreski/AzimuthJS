@@ -103,13 +103,13 @@ The output will look like this:
 
 ### `Parameters`
 
-| Option | Type | Allowed Values / Range | Default |
+| Option | Type | Description | Default |
 | :-- | :-- | :-- | :-- |
-| units | string | `m`, `km`, `ft`, `yd`, `mi`, `nm` | "m" |
-| formula | string | `great-circle`, `rhumb-line` | "great-circle" |
-| distancePrecision | number | 0–15 | 0 |
-| bearingPrecisionnumber | number | 0–15 | 0 |
-| directionPrecision | number | 0–3 | 2 |
+| units | string | A string indicating units of the distance. Supported units are: `m`, `km`, `ft`, `yd`, `mi`, `nm` | "m" |
+| formula | string | Calculation formula. Supported types are: `great-circle`, `rhumb-line` | "great-circle" |
+| distancePrecision | number | Rounding precision for distance. Between `0` and `15`. | 0 |
+| bearingPrecision | number | Rounding precision for bearing. Between `0` and `15`. | 0 |
+| directionPrecision | number | Precision for compass direction. Supported types are: `0` no directions, `1` Cardinal directions (N, E, S, W), `2` Intercardinal directions (N, NE, E, SE, S, SW, W, NW), `3` Secondary intercardinal directions (N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW) | 2 |
 
 
 
