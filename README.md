@@ -1,11 +1,12 @@
 # AzimuthJS
 ![GitHub](https://img.shields.io/github/license/theGreski/AzimuthJS)  ![GitHub](https://img.shields.io/github/languages/top/theGreski/AzimuthJS)
 
-AzimuthJS is a small, stand-alone script/module to calculate distance, azimuth and direction between two points (given the latitude/longitude of those points).
+AzimuthJS is a small, stand-alone script/module to calculate distance, bearing and direction between two points (given the latitude/longitude of those points).
 
 South latitudes are negative, east longitudes are positive.
 
 ## Installation
+
 Link `azimuth.min.js` in your HTML :
 
 **Load exact version:**  Latest version is ![GitHub](https://img.shields.io/github/v/release/theGreski/AzimuthJS?style=plastic&label=)
