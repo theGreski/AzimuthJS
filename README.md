@@ -101,71 +101,15 @@ The output will look like this:
 }
 ```
 
-### `Parameters`
+### `Option parameters`
 
 | Option | Type | Description | Default |
 | :-- | :-- | :-- | :-- |
-| units | string | A string indicating units of the distance. Supported units are: <br>`m`, `km`, `ft`, `yd`, `mi`, `nm` | "m" |
-| formula | string | Calculation formula. Supported types are: <br>`great-circle`, `rhumb-line` | "great-circle" |
+| units | string | A string indicating units of the distance. Supported units are: <br>`m`, `km`, `ft`, `yd`, `mi`, `nm` | `m` |
+| formula | string | Calculation formula. Supported types are: <br>`great-circle`, `rhumb-line` | `great-circle` |
 | distancePrecision | number | Rounding precision for distance. <br>Between `0` and `15`. | 0 |
 | bearingPrecision | number | Rounding precision for bearing. <br>Between `0` and `15`. | 0 |
 | directionPrecision | number | Precision for compass direction. Supported types are: <br>`0` no directions, <br>`1` Cardinal directions (N, E, S, W), <br>`2` Intercardinal directions (N, NE, E, SE, S, SW, W, NW), <br>`3` Secondary intercardinal directions (N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW) | 2 |
-
-
-
-### `units`
-
-A string indicating units of the distance.
-
-Accepts only:
-
-  `m` for meters,  
-  `km` for kilometers,  
-  `ft` for feet,  
-  `yd` for yards,  
-  `mi` for miles,  
-  `nm` for nautical miles 
-
-- **Default**: `m`
-
-
-### `formula`
-
-A string indicating calculation formula.
-
-Accepts only:
-  `great-circle` for Great Circle,
-  `rhumb-line` for straight line
-
-- **Default**: `great-circle`
-
-
-### `distancePrecision`
-
-A number indicating number of rounding decimal places (precision) for distance measure.
-
-- **Default**: `0`
-
-
-### `bearingPrecision`
-
-A number indicating number of rounding decimal places (precision) for bearing measure.
-
-- **Default**: `0`
-
-
-### `directionPrecision`
-
-A number indicating precision for compass direction measure.
-
-Accepts only:
-
-  `0` No compass direction,  
-  `1` Cardinal directions (N, E, S, W)  
-  `2` Intercardinal directions (N, NE, E, SE, S, SW, W, NW)  
-  `3` Secondary intercardinal directions (N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW)
-
-- **Default**: `2`
 
 
 
