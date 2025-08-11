@@ -105,8 +105,7 @@ The output will look like this:
 
 | Option | Type | Description | Default |
 | :-- | :-- | :-- | :-- |
-| units | string | A string indicating units of the distance. Supported units are:<br>
-`m`, `km`, `ft`, `yd`, `mi`, `nm` | "m" |
+| units | string | A string indicating units of the distance. Supported units are:<br>`m`, `km`, `ft`, `yd`, `mi`, `nm` | "m" |
 | formula | string | Calculation formula. Supported types are:  
 `great-circle`, `rhumb-line` | "great-circle" |
 | distancePrecision | number | Rounding precision for distance.  
