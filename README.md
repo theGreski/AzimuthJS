@@ -10,7 +10,7 @@ Link `azimuth.min.js` in your HTML :
 
 **Load exact version:**  Latest version is ![GitHub](https://img.shields.io/github/v/release/theGreski/AzimuthJS?style=plastic&label=)
 ```html
-<script src="https://cdn.jsdelivr.net/gh/theGreski/AzimuthJS@2.0.0/dist/azimuth.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/theGreski/AzimuthJS@2.0.1/dist/azimuth.min.js"></script>
 ```
 
 **Load a version range instead of an exact version:**
@@ -28,6 +28,16 @@ Link `azimuth.min.js` in your HTML :
 const azimuth = require('https://cdn.jsdelivr.net/gh/theGreski/AzimuthJS@latest/dist/azimuth.min.js');
 ```
 
+**Load ESM module:**
+```javascript
+import azimuth from 'https://cdn.jsdelivr.net/gh/theGreski/AzimuthJS@latest/dist/azimuth.min.js';
+```
+
+**Node.js ESM:**
+```javascript
+import azimuth from 'azimuthjs';
+```
+
 ## Usage
 The azimuth function accepts coordinates of two points ({lat: latitude, lng: longitude}, {lat: latitude, lng: longitude}). For example London to New York:
 
@@ -40,8 +50,8 @@ The output will look like this:
 {
     distance: 55648932,
     units: "m",
-    azimuth: 258,
-    method: "great-circle",
+    bearing: 258,
+    formula: "great-circle",
     direction: "W"
 }
 ```
@@ -50,7 +60,7 @@ Or wrap aroud try catch block to find any validation isues:
 
 ```javascript
 try {
-  azimuth(9999, -200, "abc", null)
+  azimuth({lat: 9999, lng: -200}, {lat: "abc", lng: null}, null)
 } catch (e) {
   console.error(e)
 }
@@ -63,7 +73,7 @@ You can configure the following options:
 - [`units`](#units)
 - [`formula`](#formula)
 - [`distancePrecision`](#distanceprecision)
-- [`azimuthPrecision`](#azimuthprecision)
+- [`bearingPrecision`](#azimuthprecision)
 - [`directionPrecision`](#directionprecision)
 
 Here's an example specyfying all available options:
@@ -74,7 +84,7 @@ azimuth({lat: 51.509865, lng: -0.118092}, {lat: 40.730610, lng: -73.935242},
     units: "mi",  
     formula: "great-circle",  
     distancePrecision: 3,  
-    azimuthPrecision: 3,  
+    bearingPrecision: 3,  
     directionPrecision: 2  
   }  
 )
@@ -86,10 +96,16 @@ The output will look like this:
     formula: "great-circle",
     distance: 5564892.653,
     units: "mi",
-    azimuth: 258.049,
+    bearing: 258.049,
     direction: "W"
 }
 ```
+
+### `Parameters`
+
+| Option | Type | Allowed Values / Range | Default |
+| :-- | :-- | --: | --: |
+| units | string | "m", "km", "ft", "yd", `mi`, "nm" | "m" |
 
 
 ### `units`
@@ -100,7 +116,7 @@ Accepts only:
 
   `m` for meters,  
   `km` for kilometers,  
-  `ft` for foots,  
+  `ft` for feet,  
   `yd` for yards,  
   `mi` for miles,  
   `nm` for nautical miles 
@@ -126,7 +142,7 @@ A number indicating number of rounding decimal places (precision) for distance m
 - **Default**: `0`
 
 
-### `azimuthPrecision`
+### `bearingPrecision`
 
 A number indicating number of rounding decimal places (precision) for bearing measure.
 
