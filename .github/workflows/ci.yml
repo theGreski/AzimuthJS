@@ -39,6 +39,7 @@ jobs:
       - name: "Auto Minify"
         uses: nizarmah/auto-minify@v3
         with:
+          js_engine: 'uglify-js'
           directory: "src"
           output: "dist"
           overwrite: false
