@@ -1,14 +1,14 @@
 {
     "name": "azimuthjs",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Get distance, bearing and direction between two GPS coordinates",
     "source": "src/azimuth.js",
-    "main": "src/azimuth.js",
+    "main": "dist/azimuth.js",
     "unpkg": "dist/azimuth.min.js",
-    "module": "src/azimuth.esm.js",
+    "module": "dist/azimuth.esm.js",
     "exports": {
-        "import": "./src/azimuth.esm.js",
-        "require": "./src/azimuth.js"
+        "import": "./dist/azimuth.esm.js",
+        "require": "./dist/azimuth.js"
     },
     "type": "module",
     "repository": {
