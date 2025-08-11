@@ -5,9 +5,9 @@ const NEW_YORK = {lat: 40.730610, lng: -73.935242};
 
 describe('Encapsulation testing', () => {
 
-    test('Helper function exposed', () => {
-        expect(() => metersConverter(1, "m").toEqual(1));
-    })
+    test('Helper function not exposed', () => {
+        expect(() => metersConverter(1, "m")).toThrow(ReferenceError);
+    });
 });
 
 describe('Validation testing', () => {
