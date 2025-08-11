@@ -3,6 +3,13 @@ const azimuth = require('../src/azimuth.js');
 const LONDON = {lat: 51.509865, lng: -0.118092};
 const NEW_YORK = {lat: 40.730610, lng: -73.935242};
 
+describe('Encapsulation testing', () => {
+
+    test('Helper function exposed', () => {
+        expect(() => metersConverter(1, "m").toEqual(1));
+    })
+});
+
 describe('Validation testing', () => {
     
     test('Validate Point', () => {
