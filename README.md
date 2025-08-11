@@ -104,8 +104,13 @@ The output will look like this:
 ### `Parameters`
 
 | Option | Type | Allowed Values / Range | Default |
-| :-- | :-- | --: | --: |
-| units | string | "m", "km", "ft", "yd", `mi`, "nm" | "m" |
+| :-- | :-- | :-- | :-- |
+| units | string | `m`, `km`, `ft`, `yd`, `mi`, `nm` | "m" |
+| formula | string | `great-circle`, `rhumb-line` | "great-circle" |
+| distancePrecision | number | 0–15 | 0 |
+| bearingPrecisionnumber | number | 0–15 | 0 |
+| directionPrecision | number | 0–3 | 2 |
+
 
 
 ### `units`
