@@ -48,9 +48,9 @@ azimuth({lat: 51.509865, lng: -0.118092}, {lat: 40.730610, lng: -73.935242})
 The output will look like this:
 ```javascript
 {
-    distance: 55648932,
+    distance: 5564893,
     units: "m",
-    bearing: 258,
+    bearing: 288,
     formula: "great-circle",
     direction: "W"
 }
@@ -94,9 +94,9 @@ The output will look like this:
 ```javascript
 {
     formula: "great-circle",
-    distance: 5564892.653,
+    distance: 3457.863,
     units: "mi",
-    bearing: 258.049,
+    bearing: 288.308,
     direction: "W"
 }
 ```
